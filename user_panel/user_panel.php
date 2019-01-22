@@ -31,17 +31,38 @@ $(document).ready(function(){
 	  }
   });
 */ 
+	
+	$(".answ_yes").click(function(){
+		var id_quest = $(".confirm_popup").find("input[name=\"id_quest_val\"]").val();
+		var points_quest = $(".confirm_popup").find("input[name=\"points_quest_val\"]").val();
+		$.post("complicated_actions_solver.php",
+			{
+			  id_quest: id_quest,
+			  points_quest: points_quest,
+			  submit_quest: true
+			},
+			function(data,status){
+				if(status=="success"){
+					alert("Data: " + data + "\nStatus: " + status+ "\nId_quest: " + id_quest);
+				}
+				else{
+					alert("FAILURE !!!" + data + "\nStatus: " + status);
+				}
+		});	
+	});
+	
   $(".active_quest").click(function(){
 	  var this_quest = $(this);
 	  var quest_name = this_quest.find(".name_quest").html();
-	  $("#quest_name_popup").html(quest_name);
+	  var id_quest = this_quest.find("input[name=\"id_quest\"]").val();
+	  var points_quest = this_quest.find("input[name=\"points_quest\"]").val();
+	  $("#quest_name_popup").html(quest_name+'<input type="hidden" name="id_quest_val" value="'+id_quest+'" />'+'<input type="hidden" name="points_quest_val" value="'+points_quest+'" />');
 	  var width_popup = $(window).width()/2-$(".confirm_popup").width()/2;
 	  var height_popup = $(window).height()/2-$(".confirm_popup").height()/2;
 	  
 	  $(".confirm_popup").css("top", height_popup);
 	  $(".confirm_popup").css("right", width_popup);
-	  $(".confirm_popup:before").show();
-	  $(".confirm_popup:after").show();
+	  $(".background_white").show();
 	  $(".confirm_popup").show();
 /*
 	  if(response == true){

@@ -53,11 +53,18 @@ class Panel_screen{
 	public function create_quests_page(){
 		
 		
-		echo '	<div class="confirm_popup">
+		echo '	
+					<div class="background_white hidden"></div>
+					<div class="confirm_popup">
+						
 						<div class="text_popup">
 							<p>
-							<span>Czy potwierdzasz wykonanie zadania ( </span><span id="quest_name_popup"></span><span> ) ?</span>
+								<span>Zadanie: </span><span id="quest_name_popup"></span>
+							</p>						
+							<p>
+								<span>Czy potwierdzasz wykonanie zadania?</span>
 							</p>
+							
 						</div>
 						<div class = "answers_box_popup">
 							<div class="answer_popup answ_yes">Tak</div><div class="answer_popup answ_no">Nie</div>

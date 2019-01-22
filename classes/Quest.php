@@ -23,7 +23,7 @@ class Quest{
 			<div class="name_quest">'.$this->name_quest.'</div>
 			<div class="desc_quest"><span>'.$this->descr_quest.'</span></div>
 			<div class="points_quest"><span>'.$this->points_quest.' pkt</span></div>
-			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"></div>
+			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
 		';
 		
 	}

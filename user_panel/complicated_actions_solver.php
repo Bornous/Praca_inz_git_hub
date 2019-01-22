@@ -26,6 +26,7 @@ elseif(isset($_POST["group_user"])){
 }
 elseif(isset($_POST["submit_quest"])){
 	$id_quest=$_POST["id_quest"];
+	$id_user
 	$sql="";
 }
 elseif(isset($_POST["load_all_group_quests"])){
