@@ -77,13 +77,18 @@ elseif(isset($_POST["create_quest_form"])){
 		<form action="complicated_actions_solver.php" method="post">
 			<input type="hidden" name="add_a_quest" value="true">
 			<div class="login_group">
-							<input class="login_control" name="quest_name" placeholder="Nazwa zadania" type="text">
+							<input class="login_control" name="quest_name" placeholder="Wpisz nazwę zadania" type="text">
 			</div>
 			<div class="login_group">
-			<spam>Opis zadania:</spam>
-							<textarea name="decr_quest" rows="7" cols="60">Enter your text here...</textarea>
+							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
 			</div>
-			<input id="submitbutton" type="submit" value="Accept" class="login_submit_button">
+			<div class="login_group">
+							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+			</div>
+			<div class="login_group">
+							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+			</div>
+			<input id="submitbutton" type="submit" value="Wyślij propozycję dodania zadania" class="login_submit_button">
 		</form>
 	</div>
 	

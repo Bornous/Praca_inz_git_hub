@@ -38,6 +38,7 @@ $(document).ready(function(){
 			},
 			function(data,status){
 				if(status=="success"){					
+					$(".right_contener").toggleClass("quest_form");										
 					$(".right_contener").removeClass("with_quests");										
 					$(".right_contener").html(data);										
 				}

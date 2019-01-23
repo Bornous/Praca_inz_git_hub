@@ -375,6 +375,11 @@ input[disabled]{
 	background-color: #2AA72F;
 }
 
+.quest_form{
+	padding: 50px 90px 50px 50px;
+	box-sizing: border-box;
+}
+
 .new_quest, .a_quest{
 	flex: 1 auto;
 	margin:5px;
