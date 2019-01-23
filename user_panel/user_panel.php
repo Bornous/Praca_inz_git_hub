@@ -43,14 +43,38 @@ $(document).ready(function(){
 			},
 			function(data,status){
 				if(status=="success"){
-					alert("Data: " + data + "\nStatus: " + status+ "\nId_quest: " + id_quest);
+					//alert("Data: " + data + "\nStatus: " + status+ "\nId_quest: " + id_quest);
+					var width_popup = $(window).width()/2-$(".succesfull_completion_tick").width()/2;
+					var height_popup = $(window).height()/2-$(".succesfull_completion_tick").height()/2;
+					$(".text_popup").css("opacity",'0');
+					$(".answers_box_popup").css("opacity",'0');
+					$(".succesfull_completion_tick").css("z-index",'1');
+					$(".succesfull_completion_tick").css("opacity",'1');
+					//$(".confirm_popup").html("<div style=\"height:"+$(".confirm_popup").height()+"; width: "+$(".confirm_popup").width()+"; background-color:#3C9F40;font-size:3em;text-align:center\"><i class=\"fas fa-check\"></i></div>");
+					//$(".confirm_popup").hide();
+					setTimeout(function(){window.location="user_panel.php";}, 1500);
+										
 				}
 				else{
 					alert("FAILURE !!!" + data + "\nStatus: " + status);
 				}
-		});	
+		},	"text");	
 	});
 	
+	$(".answ_no").click(function(){
+		$(".background_white").hide().fadeOut( 400 );
+	  $(".confirm_popup").hide().fadeOut( 400 );
+	});
+	$(".background_white").click(function(){
+		$(".background_white").hide().fadeOut( 400 );
+		$(".confirm_popup").hide().fadeOut( 400 );
+	});
+	$(document).keyup(function(e) {
+	  if (e.keyCode === 27) {
+			$(".background_white").hide().fadeOut( 400 );
+			$(".confirm_popup").hide().fadeOut( 400 );
+	  }
+	});
   $(".active_quest").click(function(){
 	  var this_quest = $(this);
 	  var quest_name = this_quest.find(".name_quest").html();

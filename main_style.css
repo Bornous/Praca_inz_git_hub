@@ -351,6 +351,24 @@ input[disabled]{
   }
 }
 
+.add_quest{
+	flex: 1 auto;
+	margin:5px;
+	padding:10px;
+	box-sizing:border-box;
+	border: 3px dotted #000c;
+	background-color: #5CBF60;
+	text-align: center;
+	line-height: 137px;
+	font-size:1.4em;
+	cursor:pointer;
+}
+
+.add_quest spam{
+	 display: inline-block;	 
+	 vertical-align: middle;	 
+	 line-height: normal;
+}
 .new_quest, .a_quest{
 	flex: 1 auto;
 	margin:5px;
@@ -359,13 +377,30 @@ input[disabled]{
 	border: 3px dotted #79c32391;
 
 }
+
 .new_quest{
 	background-color:#ffeb3b99;
 	
 }
+
+.new_quest:hover{
+	background-color:#ffe81dcc;
+	border: 3px dotted #77c61b;
+}
+
 .a_quest{
 	/*background-color:#efffcc;*/
 	background-color:#aadeff99;
+}
+
+.a_quest:hover{
+	/*background-color:#efffcc;*/
+	background-color: #73c7ffcc;
+	border: 3px dotted #1d300899;
+}
+
+.a_quest:hover .points_quest{
+	opacity:0.9;
 }
 
 .active_quest{
@@ -422,11 +457,20 @@ input[disabled]{
 	box-sizing:border-box;
 	z-index: 9999;
 	border-radius: 100px;
+	
 }
-/*
-.answers_box_popup:after{
-	clear:	both;
-}*/
+.succesfull_completion_tick{
+	position: absolute;
+	background-color:#5CBF60;
+	opacity:0;
+	width:100%;
+	height:100%;
+	transition: opacity 1.2s;
+	font-size:12em;
+	text-align:center;
+	z-index: -1;
+	border-radius: 100px;
+}
 
 .text_popup{
 	padding: 10px;
@@ -501,7 +545,7 @@ input[disabled]{
 .persons_place{
 	margin-right:3px;
 	padding:8px 13px;
-	font-size:2.1 em;	
+	font-size: 1.7em;	
 	border-right: 3px dotted #0055ab;
 }
 
@@ -665,7 +709,7 @@ input[disabled]{
 .a_list_of_incomers{
 	padding:30px;
 	font-size:2em;
-	color: 000000af;
+	color: #000000af;
 }
 
 /* User panel screen  --- SETTINGS */

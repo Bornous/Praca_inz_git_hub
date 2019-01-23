@@ -26,8 +26,17 @@ elseif(isset($_POST["group_user"])){
 }
 elseif(isset($_POST["submit_quest"])){
 	$id_quest=$_POST["id_quest"];
-	$id_user
-	$sql="";
+	$points_quest=$_POST["points_quest"];
+	$id_user=$_SESSION["Client"]->get_id_user();
+	$data_execution = date("Y-m-d G:i:s");
+	$sql_submit_quest="INSERT INTO `inz_groups_history` (`id_user`,`id_quest_history`,`date_execution`,`points_rewarded`)  VALUES ('".$id_user."','".$id_quest."','".$data_execution."','".$points_quest."')";
+	if( $_SESSION["DB_connection"]->query($sql_submit_quest) ){
+		$id_last_execution = $_SESSION["DB_connection"]->give_insert_id();
+		$sql_update_last_exe_id="UPDATE `inz_quests` SET `id_last_execution` = '".$id_last_execution."' WHERE `id_quest` = '".$id_quest."' ";
+		if ($_SESSION["DB_connection"]->query($sql_update_last_exe_id) )	 echo "Udao se: ".$sql_update_last_exe_id;		
+		else echo $sql_update_last_exe_id;		
+	}
+	else return false;
 }
 elseif(isset($_POST["load_all_group_quests"])){
 	$id_group=$_SESSION["Client"]->give_id_group();

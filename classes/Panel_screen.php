@@ -22,9 +22,26 @@ class Panel_screen{
 			WHERE
 				`inz_quests`.`id_group_user`='$id_group_user'
 				AND
-				`inz_quests`.`activation_status_quest`='1'";
+				`inz_quests`.`activation_status_quest`='1'
+				AND 
+				`inz_quests`.`id_last_execution` IS NOT NULL
+					
+		UNION
+			
+		SELECT * FROM `inz_quests`	
+			LEFT JOIN `inz_groups_history`
+				ON `inz_quests`.`id_last_execution`=`inz_groups_history`.`id_last_execution`
+			WHERE 
+				`inz_quests`.`activation_status_quest`='1'
+				AND
+				`inz_quests`.`id_group_user`='$id_group_user'
+				AND 
+				`inz_quests`.`id_last_execution` IS NULL";
+				
 				
 		if($results_quests=$_SESSION["DB_connection"]->query_arr($sql_search)){
+			//echo ">>> ".$sql_search." <<<";
+			//print_r($results_quests);
 			foreach($results_quests as $a_quest){
 				
 				$the_quest = new Quest($a_quest);
@@ -56,7 +73,7 @@ class Panel_screen{
 		echo '	
 					<div class="background_white hidden"></div>
 					<div class="confirm_popup">
-						
+						<div class="succesfull_completion_tick"><i class="fas fa-check"></i></div>
 						<div class="text_popup">
 							<p>
 								<span>Zadanie: </span><span id="quest_name_popup"></span>
@@ -71,6 +88,7 @@ class Panel_screen{
 						</div>
 					</div>';
 		echo '<div class="right_contener with_quests">';
+		echo '<div class="add_quest"><spam>Dodaj nowe zadanie</spam></div>';
 		$this->quests_list();		
 		echo '</div>';
 		echo '<div class="clear_both"></div>';
