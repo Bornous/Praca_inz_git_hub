@@ -38,14 +38,15 @@ $(document).ready(function(){
 			},
 			function(data,status){
 				if(status=="success"){					
-					$(".right_contener").removeClass("with_quests);										
+					$(".right_contener").removeClass("with_quests");										
 					$(".right_contener").html(data);										
 				}
 				else{
 					alert("FAILURE !!!" + data + "\nStatus: " + status);
 				}
 		},	"html");	
-	}
+	});
+	
 	$(".answ_yes").click(function(){
 		var id_quest = $(".confirm_popup").find("input[name=\"id_quest_val\"]").val();
 		var points_quest = $(".confirm_popup").find("input[name=\"points_quest_val\"]").val();
