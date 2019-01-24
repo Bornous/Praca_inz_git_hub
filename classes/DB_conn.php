@@ -78,6 +78,8 @@ class DB_conn{
 		$method = $ref->getMethod("bind_param");
 		$method->invokeArgs($prepared_stat,$params_arr);
 		$prepared_stat->execute();  
+		$prepared_stat->close();  
+		return true;
 	}
 	
 }

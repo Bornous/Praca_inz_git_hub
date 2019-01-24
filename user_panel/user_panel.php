@@ -2,7 +2,6 @@
 require_once("../content/header.php");
 if(!isset($_SESSION["Client"])) header("Location: ../login.php");
 $user_panel_screen = new Panel_screen();
-print_r($_SESSION["Client"]);
 ?>
 <script>
 $(document).ready(function(){

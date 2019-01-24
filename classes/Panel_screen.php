@@ -7,6 +7,9 @@ class Panel_screen{
 		if( isset($_POST["action_name"]) ){
 			$this->action_name = $_POST["action_name"];
 		}
+		elseif( isset($_GET["redirect"]) ){
+			$this->action_name =$_GET["redirect"];
+		}
 		else{
 			$this->action_name = "ranking_page";
 		}
@@ -148,9 +151,7 @@ class Panel_screen{
 	public function create_vote_page(){
 		if($_SESSION["Client"]->has_voting_right() == 1){
 			$sql_finds_numbers="SELECT `voting_subject` FROM `inz_voting_system` WHERE `id_group_user`='".$_SESSION["Client"]->give_id_group()."' AND `voting_status`='1' AND `voting_subject` <> 'incomers%id_user%".$_SESSION["Client"]->get_id_user()."' AND `voting_subject` <> 'voting_rights%id_user%".$_SESSION["Client"]->get_id_user()."'  ";
-			echo $sql_finds_numbers;
 			if($results_find_numbers = $_SESSION["DB_connection"]->query_arr($sql_finds_numbers)){
-				print_r($results_find_numbers);
 				$numbers_arr=array("quest_" => 0, "incomers" => 0, "voting_rights" => 0, "completed_quests" => 0);
 				foreach($results_find_numbers as $a_subject){
 					$_voting_subject_arr=explode("%",$a_subject["voting_subject"]);
@@ -190,7 +191,7 @@ class Panel_screen{
 			echo '	<div class="vote_option" ><span class="vote_option_text">Dodaj/Usuń/Edytuj Zadania</span><input type="hidden" name="vote_action_name" value="add_edit_quest"><span class="numbers_of_cases'.$hidden_class["quest_"].'">'.$numbers_arr["quest_"].'</span></div>';
 			echo '	<div class="vote_option" ><span class="vote_option_text">Przyjęcie członka</span><input type="hidden" name="vote_action_name" value="new_incomer"><span class="numbers_of_cases'.$hidden_class["incomers"].'">'.$numbers_arr["incomers"].'</span></div>';
 			echo '	<div class="vote_option" ><span class="vote_option_text">Miesięczne zablokowanie prawa do głosu</span><input type="hidden" name="vote_action_name" value="voting_right"><span class="numbers_of_cases'.$hidden_class["voting_rights"].'">'.$numbers_arr["voting_rights"].'</span></div>';
-			echo '	<div class="vote_option" ><span class="vote_option_text">Demokratyczne zweryfikowanie wykonania zadania</span><input type="hidden" name="vote_action_name" value="quest_checking"><span class="numbers_of_cases'.$hidden_class["quest_"].'">'.$numbers_arr["completed_quests"].'</span></div>';
+			echo '	<div class="vote_option" ><span class="vote_option_text">Demokratyczne zweryfikowanie wykonania zadania</span><input type="hidden" name="vote_action_name" value="quest_checking"><span class="numbers_of_cases'.$hidden_class["completed_quests"].'">'.$numbers_arr["completed_quests"].'</span></div>';
 			echo '</div>';
 			echo '<div class="clear_both"></div>';
 		}

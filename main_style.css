@@ -704,6 +704,17 @@ input[disabled]{
 
 /* --- VOTE: add/edit... quests*/
 
+.title_quests_list{
+	font-size:1.3em;
+	padding: 5px;
+	background-color: #00aaff;
+	border-radius:0px 30px 0px 0px;
+	margin-top:30px
+}
+
+.title_quests_list:first-of-type{
+	margin-top:0px;
+}
 
 .a_quest_to_edit{
 	display: flex;
@@ -756,6 +767,7 @@ input[disabled]{
 	border: none;
 	font-size: 1em;
 	border-radius: 0%;
+	min-width:100px;
 }
 
 

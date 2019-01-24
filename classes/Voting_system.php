@@ -25,27 +25,28 @@ class Voting_system{
 											break;
 			
 		}
-		$this->table_name=$table_name
-		$sql = "SELECT * FROM `inz_voting_system` WHERE `voting_subject`=`$_voting_subject_string` LIMIT 1";
-		if($result=$_SESSION["DB_connection"]->query_arr($sql)){
-			if(count($result)==0){
-				$id_group_user=$_SESSION["Client"]->give_id_group();
-				$sql_insert_a_voting_process="INSERT INTO `inz_voting_system` (`id_group_user`, `voting_subject`) VALUES ('$id_group_user', '$_voting_subject_string') ";
-				if($_SESSION["DB_connection"]->query($sql_insert_a_voting_process) ){
-					$this->id_voting_process=$_SESSION["DB_connection"]->give_insert_id();
-					
-				}
-			}
-			else{
-				$this->id_voting_process=$result["id_voting_process"];
-				$voting_results_votes=explode("%",$result["voting_results"]);
-				foreach($voting_results_votes as $a_vote){
-					$a_vote_arr=explode("&&&",$a_vote);
-					$this->voting_results[]=array("id_user" => $a_vote_arr[0], "vote" => $a_vote_arr[1]);
-				}
+		$this->table_name=$table_name;
+		$sql = "SELECT * FROM `inz_voting_system` WHERE `voting_subject`='$_voting_subject_string' LIMIT 1";
+		$result=$_SESSION["DB_connection"]->query_arr($sql);
+			
+		if(empty($result)){
+			$id_group_user=$_SESSION["Client"]->give_id_group();
+			$sql_insert_a_voting_process="INSERT INTO `inz_voting_system` (`id_group_user`, `voting_subject`, `voting_status`) VALUES ('$id_group_user', '$_voting_subject_string','1') ";
+			if($_SESSION["DB_connection"]->query($sql_insert_a_voting_process) ){
+				$this->id_voting_process=$_SESSION["DB_connection"]->give_insert_id();
 				
 			}
 		}
+		else{
+			$this->id_voting_process=$result["id_voting_process"];
+			$voting_results_votes=explode("%",$result["voting_results"]);
+			foreach($voting_results_votes as $a_vote){
+				$a_vote_arr=explode("&&&",$a_vote);
+				$this->voting_results[]=array("id_user" => $a_vote_arr[0], "vote" => $a_vote_arr[1]);
+			}
+			
+		}
+		
 	}
 	
 	public function voting($vote){
