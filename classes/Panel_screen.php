@@ -95,7 +95,7 @@ class Panel_screen{
 						</div>
 					</div>';
 		echo '<div class="right_contener with_quests">';
-		echo '<div class="add_quest"><spam>Dodaj nowe zadanie</spam></div>';
+		echo '<div class="add_quest"><span>Dodaj nowe zadanie</span></div>';
 		$this->quests_list();		
 		echo '</div>';
 		echo '<div class="clear_both"></div>';
@@ -199,6 +199,101 @@ class Panel_screen{
 			echo '<div class="right_contener"><div class="vote_option_not_allowed" >Obecnie nie posiadasz uprawnień wymaganych do głosowania. Jeżeli niedawno dołączyłeś do grupy jest duża szansa, że członkowie nie podjęli decyzji o przyjęciu. Jeżeli natomiast jesteś już przyjętym członkiem to najprawdopodobniej twoje prawo do głosowania zostało zawieszone - odnawia się ono na początku każdego miesiąca.</div></div>';
 		}
 	}
+	
+	public function create_vote_page_quests(){
+		echo '<div class="background_white hidden"></div>';
+		$id_group=$_SESSION["Client"]->give_id_group();
+		$sql_new_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='2'";
+		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_new_quests)){
+			$FLAG_title=true;
+			foreach($result_quests as $a_quest){
+				if($FLAG_title){
+					echo '<div class="title_quests_list">Nowe zadania czekające na zaakceptowanie</div>';
+					$FLAG_title=false;
+				}
+				$the_quest = new Quest($a_quest);
+				echo "<div class=\"a_quest_to_edit\">";
+				$the_quest->display_quest();
+				echo "</div>";
+				echo '						
+						<div class="voting_popup new_q">
+							<div><span>Czy zgadzasz się na dodanie tego zadania:</span></div>
+							<div class="popup_q_info">';
+					$the_quest->display_quest_on_voting_page();
+					echo'</div>
+							<div class = "answers_box_popup">
+								<form action="complicated_action_solver.php" method="POST">
+								<input type="hidden" name="voting_quest_add" value="yes">
+								<div class="answer_popup answ_yes" >Tak</div>
+								</form>
+								<form action="complicated_action_solver.php" method="POST">
+								<input type="hidden" name="voting_quest_add" value="no">
+								<div class="answer_popup answ_no" >Nie</div>
+								</form>
+							</div>
+						</div>
+				';
+				
+			}
+		}
+		$sql_edited_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NOT NULL";
+		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_edited_quests)){
+			$FLAG_title=true;
+			foreach($result_quests as $a_quest){
+				if($FLAG_title){
+					echo '<div class="title_quests_list">Edytowane zadania, czekające na zaakceptowanie</div>';
+					$FLAG_title=false;
+				}
+				$the_quest = new Quest($a_quest);
+				echo "<div class=\"a_quest_to_edit\">";
+				$the_quest->display_quest();
+				echo "</div>";
+					
+				
+			}
+		}
+		$sql_to_delete_q="SELECT `voting_subject` FROM `inz_voting_system` WHERE `voting_status`='1' AND `id_group_user`= '$id_group'  AND `voting_subject` LIKE 'quest_delete[%]id_quest[%]%'  ";
+										
+		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_to_delete_q)){
+			$list_of_quests = "";
+			foreach($result_quests as $a_voting_subject){
+				$exploded = explode("%",$a_voting_subject["voting_subject"]);
+				$list_of_quests.=" AND `id_quest`='".$exploded[2]."'";
+			}
+			$sql_find_this_quests = "SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' $list_of_quests ";
+			
+			$FLAG_title=true;
+			foreach($result_quests as $a_quest){
+				if($FLAG_title){
+					echo '<div class="title_quests_list">Zgłoszone do usunięcia</div>';
+					$FLAG_title=false;
+				}
+				$the_quest = new Quest($a_quest);
+				echo "<div class=\"a_quest_to_edit\">";
+				$the_quest->display_quest();
+				echo "</div>";
+					
+				
+			}
+		}
+		$sql="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NULL ";
+		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql)){
+			$FLAG_title=true;
+			foreach($result_quests as $a_quest){			
+				if($FLAG_title){
+					echo '<div class="title_quests_list grey_color_title">Wszystkie zaakceptrowane zadania: </div>';
+					$FLAG_title=false;
+				}
+				$the_quest = new Quest($a_quest);
+				echo "<div class=\"a_quest_to_edit grey_color\">";
+				$the_quest->display_quest();
+				echo "</div>";
+					
+				
+			}
+		}
+
+	}
 		
 	public function create_sett_page(){
 		echo '<div class="right_contener">';
@@ -220,6 +315,9 @@ class Panel_screen{
 				break;
 			case "vote_page":
 				$this->create_vote_page();				
+				break;
+			case "vote_page_quests":
+				$this->create_vote_page_quests();				
 				break;
 			case "sett_page":
 				$this->create_sett_page();				

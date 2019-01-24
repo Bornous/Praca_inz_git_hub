@@ -4,6 +4,7 @@ class Quest{
 	private $name_quest;
 	private $descr_quest;
 	private $points_quest;
+	private $renewable_period_quest_string;
 	private $renewable_period_quest_arr;
 	private $date_last_execution;
 	private $activation_status_quest;
@@ -13,6 +14,7 @@ class Quest{
 		$this->name_quest= $data_arr["name_quest"];
 		$this->descr_quest= $data_arr["descr_quest"];
 		$this->points_quest= $data_arr["points_quest"];
+		$this->renewable_period_quest_string= $data_arr["renewable_period_quest"];
 		$this->renewable_period_quest_arr= $this->explode_data_str($data_arr["renewable_period_quest"],false);
 		$this->date_last_execution= $this->explode_data_str($data_arr["date_execution"]);
 		$this->activation_status_quest= $data_arr["activation_status_quest"];
@@ -23,6 +25,16 @@ class Quest{
 			<div class="name_quest">'.$this->name_quest.'</div>
 			<div class="desc_quest"><span>'.$this->descr_quest.'</span></div>
 			<div class="points_quest"><span>'.$this->points_quest.' pkt</span></div>
+			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
+		';
+		
+	}
+	public function display_quest_on_voting_page(){
+		echo '
+			<div class="name_quest"><span>Nazwa: </span>'.$this->name_quest.'</div>
+			<div class="desc_quest"><span>Opis:</span><span>'.$this->descr_quest.'</span></div>
+			<div class="renewable_period"><span>Czas, do ponownego pojawienia się zadania:</span><span>'.$this->renewable_period_quest_string.'(MM-DD HH:MM:SS)<span></div>
+			<div class="points_quest"><span>Ilość przydizelanych punktów:</span><span>'.$this->points_quest.' pkt</span></div>
 			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
 		';
 		
@@ -139,6 +151,10 @@ class Quest{
 			}
 		}
 		return $days;
+	}
+	
+	public function get_id_quest(){
+		return $this->id_quest;
 	}
 }
 ?>

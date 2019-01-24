@@ -106,19 +106,7 @@ $(document).ready(function(){
   $(".vote_option").click(function(){
 	   var this_option = $(this);
 	   if(this_option.find( "input[name='vote_action_name']" ).val()== "add_edit_quest"){
-		   $.post("complicated_actions_solver.php",
-				{
-				  load_all_group_quests: true
-				},
-				function(data,status){
-					if(status=="success"){
-						$(".right_contener").html(data);
-					}
-					else{
-						alert("FAILURE !!!" + data + "\nStatus: " + status);
-					}
-			});
-			console.log("vote_option_add_edit_quest");
+		  window.location.href="user_panel.php?redirect=vote_page_quests";
 			
 	   }
 	   else if (this_option.find( "input[name='vote_action_name']" ).val()== "new_incomer"){
@@ -167,6 +155,18 @@ $(document).ready(function(){
 	   console.log("vote_option_failed_to_rocognite");
 	   }
   });
+  
+$('.a_quest_to_edit').click(function(){
+		var this_quest = $(this);
+		var width_popup = $(window).width()/2- this_quest.next().width()/2;
+		var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
+		this_quest.next().css("top", height_popup);
+		this_quest.next().css("left", width_popup);
+		this_quest.next().show();
+		$(".background_white").show();		
+		setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
+});
+ 
   
 });
 </script>

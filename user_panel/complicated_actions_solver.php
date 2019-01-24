@@ -38,81 +38,6 @@ elseif(isset($_POST["submit_quest"])){
 	}
 	else return false;
 }
-elseif(isset($_POST["load_all_group_quests"])){
-	$id_group=$_SESSION["Client"]->give_id_group();
-	$sql_new_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='2'";
-	if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_new_quests)){
-		$FLAG_title=true;
-		foreach($result_quests as $a_quest){
-			if($FLAG_title){
-				echo '<div class="title_quests_list">Nowe zadania czekające na zaakceptowanie</div>';
-				$FLAG_title=false;
-			}
-			$the_quest = new Quest($a_quest);
-			echo "<div class=\"a_quest_to_edit\">";
-			$the_quest->display_quest();
-			echo "</div>";
-				
-			
-		}
-	}
-	$sql_edited_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NOT NULL";
-	if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_edited_quests)){
-		$FLAG_title=true;
-		foreach($result_quests as $a_quest){
-			if($FLAG_title){
-				echo '<div class="title_quests_list">Edytowane zadania, czekające na zaakceptowanie</div>';
-				$FLAG_title=false;
-			}
-			$the_quest = new Quest($a_quest);
-			echo "<div class=\"a_quest_to_edit\">";
-			$the_quest->display_quest();
-			echo "</div>";
-				
-			
-		}
-	}
-	$sql_to_delete_q="SELECT `voting_subject` FROM `inz_voting_system` WHERE `voting_status`='1' AND `id_group_user`= '$id_group'  AND `voting_subject` LIKE 'quest_delete[%]id_quest[%]%'  ";
-									
-	if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_to_delete_q)){
-		$list_of_quests = "";
-		foreach($result_quests as $a_voting_subject){
-			$exploded = explode("%",$a_voting_subject["voting_subject"]);
-			$list_of_quests.=" AND `id_quest`='".$exploded[2]."'";
-		}
-		$sql_find_this_quests = "SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' $list_of_quests ";
-		
-		$FLAG_title=true;
-		foreach($result_quests as $a_quest){
-			if($FLAG_title){
-				echo '<div class="title_quests_list">Zgłoszone do usunięcia</div>';
-				$FLAG_title=false;
-			}
-			$the_quest = new Quest($a_quest);
-			echo "<div class=\"a_quest_to_edit\">";
-			$the_quest->display_quest();
-			echo "</div>";
-				
-			
-		}
-	}
-	$sql="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NULL ";
-	if($result_quests = $_SESSION["DB_connection"]->query_arr($sql)){
-		$FLAG_title=true;
-		foreach($result_quests as $a_quest){			
-			if($FLAG_title){
-				echo '<div class="title_quests_list">Wszystkie istniejace zadania (oprócz tych, które czekają na zaakceptowanie edycji): </div>';
-				$FLAG_title=false;
-			}
-			$the_quest = new Quest($a_quest);
-			echo "<div class=\"a_quest_to_edit\">";
-			$the_quest->display_quest();
-			echo "</div>";
-				
-			
-		}
-	}
-}
 elseif(isset($_POST["load_new_incomers"])){
 	$id_group=$_SESSION["Client"]->give_id_group();
 	$id_me=$_SESSION["Client"]->get_id_user();
@@ -135,21 +60,21 @@ elseif(isset($_POST["create_quest_form"])){
 	echo '
 	<form action="#" method="POST">
 	<input type="hidden" name="action_name" value="quests_page">
-	<div class="return_button_new_quest" onclick="javascript:this.parentNode.submit();"><spam><i class="fas fa-arrow-circle-left"></i></spam><spam>Wróć</spam></div>
+	<div class="return_button_new_quest" onclick="javascript:this.parentNode.submit();"><span><i class="fas fa-arrow-circle-left"></i></span><span>Wróć</span></div>
 	</form>
 	<div class="form_adding_quest">
 		<form action="complicated_actions_solver.php" method="post">
 			<input type="hidden" name="add_a_quest" value="true">
 			<div class="login_group">
-			<spam>Nazwa: </spam>
+			<span>Nazwa: </span>
 							<input class="login_control" name="quest_name" placeholder="Wpisz nazwę zadania" type="text">
 			</div>
 			<div class="login_group">
-			<spam>Opis: </spam>
+			<span>Opis: </span>
 							<textarea class="login_control" name="quest_descr" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
 			</div>
 			<div class="login_group datetime_inputs">
-							<p><spam>Wybierz co jaki czas zadanie ma się ponownie pojawiać:</spam></p>
+							<p><span>Wybierz co jaki czas zadanie ma się ponownie pojawiać:</span></p>
 							<label>Miesięcy: <input type="number" name="quest_renewable_period_month" min="0" max="12" step="1" value="0"></label>
 							<label>Dni: <input type="number" name="quest_renewable_period_day" min="0" max="31" step="1" value="1"></label>
 							<label>Godzin: <input type="number" name="quest_renewable_period_hour" min="0" max="23" step="1" value="0"></label>
