@@ -73,26 +73,45 @@ elseif(isset($_POST["load_new_incomers"])){
 }
 elseif(isset($_POST["create_quest_form"])){
 	echo '
+	<form action="#" method="POST">
+	<input type="hidden" name="action_name" value="quests_page">
+	<div class="return_button_new_quest" onclick="javascript:this.parentNode.submit();"><spam><i class="fas fa-arrow-circle-left"></i></spam><spam>Wróć</spam></div>
+	</form>
 	<div class="form_adding_quest">
 		<form action="complicated_actions_solver.php" method="post">
 			<input type="hidden" name="add_a_quest" value="true">
 			<div class="login_group">
+			<spam>Nazwa: </spam>
 							<input class="login_control" name="quest_name" placeholder="Wpisz nazwę zadania" type="text">
 			</div>
 			<div class="login_group">
-							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+			<spam>Opis: </spam>
+							<textarea class="login_control" name="quest_descr" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+			</div>
+			<div class="login_group datetime_inputs">
+							<p><spam>Wybierz co jaki czas zadanie ma się ponownie pojawiać:</spam></p>
+							<label>Miesięcy: <input type="number" name="quest_renewable_period_month" min="0" max="12" step="1" value="0"></label>
+							<label>Dni: <input type="number" name="quest_renewable_period_day" min="0" max="31" step="1" value="1"></label>
+							<label>Godzin: <input type="number" name="quest_renewable_period_hour" min="0" max="23" step="1" value="0"></label>
+							<label>Minut: <input type="number" name="quest_renewable_period_min" min="0" max="59" step="1" value="0"></label>
+							<input type="hidden" 	name="quest_renewable_period_sec" value="0">
 			</div>
 			<div class="login_group">
-							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
-			</div>
-			<div class="login_group">
-							<textarea class="login_control" name="decr_quest" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+							<label>Liczba punktów za zrobienie zadania: <input type="number" name="quest_points" min="1"  max="999999" step="1" value="100"></label>
 			</div>
 			<input id="submitbutton" type="submit" value="Wyślij propozycję dodania zadania" class="login_submit_button">
 		</form>
 	</div>
 	
 	';
+}
+elseif(isset($_POST["add_a_quest"])){
+	
+	$renewable_period = ($_POST["quest_renewable_period_month"] < 10 ?"0".$_POST["quest_renewable_period_month"] : $_POST["quest_renewable_period_month"])."-".($_POST["quest_renewable_period_day"] < 10 ?"0".$_POST["quest_renewable_period_day"] : $_POST["quest_renewable_period_day"])." ".($_POST["quest_renewable_period_hour"] < 10 ?"0".$_POST["quest_renewable_period_hour"] : $_POST["quest_renewable_period_hour"]).":".($_POST["quest_renewable_period_min"] < 10 ?"0".$_POST["quest_renewable_period_min"] : $_POST["quest_renewable_period_min"]).":00";
+	$params_to_bind = array("isssii",$_SESSION["Client"]->give_id_group(),$_POST["quest_name"],$_POST["quest_descr"],$_POST["quest_points"],$renewable_period,"2");
+
+	$sql="INSERT INTO `inz_quests` (`id_group_user`, `name_quest`, `descr_quest`, `points_quest`, `renewable_period_quest`, `activation_status_quest`) VALUES(?,?,?,?,?,?)";
+	
 }
 
 ?>

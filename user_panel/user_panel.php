@@ -6,31 +6,6 @@ print_r($_SESSION["Client"]);
 ?>
 <script>
 $(document).ready(function(){
-/*
-  $(".active_quest").click(function(){
-	  var this_quest = $(this);
-	  var response = confirm("Czy napewno wykonałeś to zadanie?");
-	  if(response == true){
-			var id_quest= this_quest.find( "input[name='id_quest']" ).val();
-			$.post("complicated_actions_solver.php",
-				{
-				  id_quest: id_quest,
-				  submit_quest: true
-				},
-				function(data,status){
-					if(status=="success"){
-						alert("Data: " + data + "\nStatus: " + status);
-						this_quest.unbind("click");
-						this_quest.removeClass("active_quest");
-						this_quest.addClass("done_quest");
-					}
-					else{
-						alert("FAILURE !!!" + data + "\nStatus: " + status);
-					}
-			});
-	  }
-  });
-*/ 
 	$(".add_quest").click(function(){
 		$.post("complicated_actions_solver.php",
 			{
@@ -49,6 +24,7 @@ $(document).ready(function(){
 	});
 	
 	$(".answ_yes").click(function(){
+		var this_el =this;
 		var id_quest = $(".confirm_popup").find("input[name=\"id_quest_val\"]").val();
 		var points_quest = $(".confirm_popup").find("input[name=\"points_quest_val\"]").val();
 		$.post("complicated_actions_solver.php",
@@ -68,7 +44,7 @@ $(document).ready(function(){
 					$(".succesfull_completion_tick").css("opacity",'1');
 					//$(".confirm_popup").html("<div style=\"height:"+$(".confirm_popup").height()+"; width: "+$(".confirm_popup").width()+"; background-color:#3C9F40;font-size:3em;text-align:center\"><i class=\"fas fa-check\"></i></div>");
 					//$(".confirm_popup").hide();
-					setTimeout(function(){window.location="user_panel.php";}, 1500);
+					setTimeout(function(){this_el.parentNode.submit();}, 1500);
 										
 				}
 				else{

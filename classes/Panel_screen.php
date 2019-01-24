@@ -84,7 +84,11 @@ class Panel_screen{
 							
 						</div>
 						<div class = "answers_box_popup">
-							<div class="answer_popup answ_yes">Tak</div><div class="answer_popup answ_no">Nie</div>
+							<form action="#" method="POST">
+							<input type="hidden" name="action_name" value="quests_page">
+							<div class="answer_popup answ_yes" >Tak</div>
+							</form>
+							<div class="answer_popup answ_no">Nie</div>
 						</div>
 					</div>';
 		echo '<div class="right_contener with_quests">';

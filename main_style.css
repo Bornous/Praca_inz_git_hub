@@ -362,7 +362,7 @@ input[disabled]{
 	line-height: 137px;
 	font-size:1.4em;
 	cursor:pointer;
-	transition: background-color .3s;
+	transition: background-color .4s;
 }
 
 .add_quest spam{
@@ -376,7 +376,6 @@ input[disabled]{
 }
 
 .quest_form{
-	padding: 50px 90px 50px 50px;
 	box-sizing: border-box;
 }
 
@@ -518,6 +517,86 @@ input[disabled]{
 .answ_no{
 	margin-left: 250px;
 	background-color: #e91e63;
+}
+
+.form_adding_quest{
+	width:90%;
+	display:block;
+	margin: 20px auto;
+	padding:10px;
+}
+
+.form_adding_quest textarea{
+	width:90%;
+	height:150px;
+	resize:none;
+}
+
+.datetime_inputs p{
+	max-width:50%;
+	display:flex;
+}
+
+.datetime_inputs label{
+	font-size:1.2em;
+	padding:3px;
+}
+.datetime_inputs input[type="number"]{
+	font-size:1.1em;
+	width: 54px;
+	padding: 3px;
+	border:none;
+}
+
+.form_adding_quest .login_group spam:first-of-type{
+	font-size:1.4em;
+}
+
+.datetime_inputs p:first-of-type{
+	max-width:100%;
+}
+
+.form_adding_quest .login_group label{
+	font-size:1.2em;
+}
+
+.form_adding_quest input[name="quest_points"]{
+	font-size:1.4em;
+	width: 74px;
+	padding: 3px;
+	padding-left: 7px;
+	border:none;
+}
+
+.form_adding_quest #submitbutton{
+	width:90%;
+	transition: background-color 0.7s;
+}
+
+.form_adding_quest #submitbutton:hover{
+	background-color:#1b6b1b;
+}
+
+.return_button_new_quest spam{
+	flex: 1 auto;
+	margin: 0px 5px;
+}
+.return_button_new_quest{
+	padding:5px 10px;
+	background-color: #5ca1b8;;
+	cursor:pointer;
+	margin-bottom:10px;
+	margin-left:5px;
+	transition: background-color 0.7s;
+	font-size:1.8em;
+	width:140px;
+	border-radius:10px;
+	display:flex;
+	justify-content: center;
+}
+
+.return_button_new_quest:hover{
+	background-color:#1d7bcb;
 }
 
 /* User panel screen  --- RANKING */
