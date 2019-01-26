@@ -150,7 +150,7 @@ class Panel_screen{
 	
 	public function create_vote_page(){
 		if($_SESSION["Client"]->has_voting_right() == 1){
-			$sql_finds_numbers="SELECT `voting_subject` FROM `inz_voting_system` WHERE `id_group_user`='".$_SESSION["Client"]->give_id_group()."' AND `voting_status`='1' AND `voting_subject` <> 'incomers%id_user%".$_SESSION["Client"]->get_id_user()."' AND `voting_subject` <> 'voting_rights%id_user%".$_SESSION["Client"]->get_id_user()."'  ";
+			$sql_finds_numbers="SELECT `voting_subject`FROM `inz_voting_system` WHERE `id_group_user`='".$_SESSION["Client"]->give_id_group()."' AND `voting_status`='1' AND `voting_subject` <> 'incomers%id_user%".$_SESSION["Client"]->get_id_user()."' AND `voting_subject` <> 'voting_rights%id_user%".$_SESSION["Client"]->get_id_user()."'  ";
 			if($results_find_numbers = $_SESSION["DB_connection"]->query_arr($sql_finds_numbers)){
 				$numbers_arr=array("quest_" => 0, "incomers" => 0, "voting_rights" => 0, "completed_quests" => 0);
 				foreach($results_find_numbers as $a_subject){
@@ -200,8 +200,9 @@ class Panel_screen{
 		}
 	}
 	
-	public function create_vote_page_quests(){
+	public function create_vote_page_quests(){		
 		echo '<div class="background_white hidden"></div>';
+		echo '<div class="right_contener">';
 		$id_group=$_SESSION["Client"]->give_id_group();
 		$sql_new_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='2'";
 		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_new_quests)){
@@ -212,22 +213,26 @@ class Panel_screen{
 					$FLAG_title=false;
 				}
 				$the_quest = new Quest($a_quest);
-				echo "<div class=\"a_quest_to_edit\">";
+				$voting_subject = "quest_add%id_quest%".$the_quest->get_id_quest();
+				$this_voting_process = new Voting_system($voting_subject);
+				echo "<div class=\"a_quest_to_edit ".$this_voting_process->has_already_user_voted()." \">";
 				$the_quest->display_quest();
 				echo "</div>";
 				echo '						
 						<div class="voting_popup new_q">
-							<div><span>Czy zgadzasz się na dodanie tego zadania:</span></div>
+							<div><span class="popup_title">Czy zgadzasz się na dodanie tego zadania:</span></div>
 							<div class="popup_q_info">';
 					$the_quest->display_quest_on_voting_page();
 					echo'</div>
 							<div class = "answers_box_popup">
-								<form action="complicated_action_solver.php" method="POST">
+								<form action="complicated_actions_solver.php" method="POST">
 								<input type="hidden" name="voting_quest_add" value="yes">
+								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
 								<div class="answer_popup answ_yes" >Tak</div>
 								</form>
-								<form action="complicated_action_solver.php" method="POST">
+								<form action="complicated_actions_solver.php" method="POST">
 								<input type="hidden" name="voting_quest_add" value="no">
+								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
 								<div class="answer_popup answ_no" >Nie</div>
 								</form>
 							</div>
@@ -292,7 +297,8 @@ class Panel_screen{
 				
 			}
 		}
-
+		echo '</div>';
+		echo '<div class="clear_both"></div>';
 	}
 		
 	public function create_sett_page(){
@@ -304,6 +310,9 @@ class Panel_screen{
 		echo '<div class="clear_both"></div>';
 	}
 	
+	public function get_action_name(){
+		return $this->action_name;
+	}
 	public function create_main_content(){
 		switch($this->action_name){
 			

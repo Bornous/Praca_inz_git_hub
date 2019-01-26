@@ -36,7 +36,7 @@ class Client{
 	}
 	
 	public function give_id_group(){
-		return $this->group_user->give_id_group();
+		return $this->group_user->give_id_group(); //it returns value from Group's method called the same
 	}
 
 	public function get_id_user(){

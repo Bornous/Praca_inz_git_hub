@@ -31,10 +31,10 @@ class Quest{
 	}
 	public function display_quest_on_voting_page(){
 		echo '
-			<div class="name_quest"><span>Nazwa: </span>'.$this->name_quest.'</div>
-			<div class="desc_quest"><span>Opis:</span><span>'.$this->descr_quest.'</span></div>
-			<div class="renewable_period"><span>Czas, do ponownego pojawienia się zadania:</span><span>'.$this->renewable_period_quest_string.'(MM-DD HH:MM:SS)<span></div>
-			<div class="points_quest"><span>Ilość przydizelanych punktów:</span><span>'.$this->points_quest.' pkt</span></div>
+			<div class="name_quest"><span>Nazwa: </span><span>'.$this->name_quest.'</span></div>
+			<div class="desc_quest"><span>Opis: </span><span>'.$this->descr_quest.'</span></div>
+			<div class="renewable_period"><span>Czas odnowienia: </span><span>'.$this->renewable_period_quest_arr["months"].' miesięcy '.$this->renewable_period_quest_arr["days"].' dni '.$this->renewable_period_quest_arr["hours"].' godzin '.$this->renewable_period_quest_arr["minutes"].' minut <span></div>
+			<div class="points_quest"><span>Ilość przydzielanych punktów: </span><span>'.$this->points_quest.' pkt</span></div>
 			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
 		';
 		

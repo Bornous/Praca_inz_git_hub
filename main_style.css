@@ -703,7 +703,9 @@ input[disabled]{
 }
 
 /* --- VOTE: add/edit... quests*/
-
+.right_container div:first-of-type .title_quests_list{
+	margin-top:0px;
+}
 .title_quests_list{
 	display: flex;
 	font-size:1.3em;
@@ -784,53 +786,75 @@ input[disabled]{
 	position:fixed;
 	opacity:0;
 	transition: opacity 0.5s;
-	background-color: #1155ee35;
+	background-color: #a3bfffcc;
 	z-index: 9999;
 	border-radius: 20px;
-	padding: 10px;
-	font-size:1.2em;
+	padding: 20px;
+	font-size:18px;
+	width:70%;
+	padding-left:30px;
 }
 
-.voting_popup:first-child{
-	font-size:1.4em;
+
+.voting_popup .popup_title{
+	font-size:24px;
+}
+.voting_popup .popup_q_info{
+	width:100%;
+}
+.voting_popup .popup_q_info span{
+	font-size:18px;
+	margin-right: 40px;
+	color: black;
+	min-width:246.5px;
 }
 
-.popup_q_info .name_quest{
+.voting_popup .popup_q_info span:nth-of-type(2){
+	color: #073819;
+}
+
+.voting_popup .popup_q_info .name_quest{
 	border:none;
 	margin-top:10px;	
-	font-size:inherit;
 }
-.popup_q_info .desc_quest{
+.voting_popup .popup_q_info .desc_quest{
 	border:none;
 	margin-top:10px;
 	color:inherit;
-	
-	font-size:inherit;
+	font-size:1.2em;
 }
 
-.popup_q_info .renewable_period{
+.voting_popup .popup_q_info .renewable_period{
 	border:none;
 	margin-top:10px;
-	
-	font-size:inherit;
+	font-size:1.2em;
 }
 
-.popup_q_info .points_quest{
+.voting_popup .popup_q_info .points_quest{
 	border:none;
 	margin-top:10px;
-	
-	font-size:inherit;
+	font-size:1.2em;
+	text-align:inherit;
 }
-.popup_q_info .points_quest span{
+.voting_popup .popup_q_info .points_quest span{
 	border:none;
 	margin-top:10px;
 	position:inherit;
 	background-color:inherit;
-	color:inherit;
-	font-size:inherit;
 	padding:0px;
 	border-radius:0px;
-	
+}
+
+.voting_popup .voting_popup .answers_box_popup{
+	margin-top:30px;
+}
+
+.user_voted_yes{
+		background-color:#73b97680;
+}
+
+.user_voted_no{
+	background-color: #ef5c5c4d;
 }
 
 /* --- VOTE: submit incomers -------------------------------------------------------------------*/

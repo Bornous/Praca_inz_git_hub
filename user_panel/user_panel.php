@@ -5,6 +5,9 @@ $user_panel_screen = new Panel_screen();
 ?>
 <script>
 $(document).ready(function(){
+	<?php
+	if($user_panel_screen->get_action_name() == "quests_page"){
+	?>
 	$(".add_quest").click(function(){
 		$.post("complicated_actions_solver.php",
 			{
@@ -101,7 +104,48 @@ $(document).ready(function(){
 	  }
 */
   });
+  <?php
+	}
+	elseif($user_panel_screen->get_action_name() == "vote_page_quests"){
   
+  ?>
+  	
+	$(".answ_yes").click(function(){
+		this.parentNode.submit();
+	});
+	
+	$(".answ_no").click(function(){
+		this.parentNode.submit();
+	});
+	
+	$(".background_white").click(function(){
+		$(".background_white").hide().fadeOut( 400 );
+		$(".voting_popup ").hide().fadeOut( 400 );
+	});
+	
+	$(document).keyup(function(e) {
+	  if (e.keyCode === 27) {
+			$(".background_white").hide().fadeOut( 400 );
+			$(".voting_popup ").hide().fadeOut( 400 );
+	  }
+	});
+   
+	$('.a_quest_to_edit').click(function(){
+			var this_quest = $(this);
+			var width_popup = $(window).width()/2- this_quest.next().width()/2;
+			var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
+			this_quest.next().css("top", height_popup);
+			this_quest.next().css("left", width_popup);
+			this_quest.next().show();
+			$(".background_white").show();		
+			setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
+	});
+
+   <?php
+	}
+	elseif($user_panel_screen->get_action_name() == "vote_page"){
+  
+  ?>
   
   $(".vote_option").click(function(){
 	   var this_option = $(this);
@@ -155,18 +199,11 @@ $(document).ready(function(){
 	   console.log("vote_option_failed_to_rocognite");
 	   }
   });
-  
-$('.a_quest_to_edit').click(function(){
-		var this_quest = $(this);
-		var width_popup = $(window).width()/2- this_quest.next().width()/2;
-		var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
-		this_quest.next().css("top", height_popup);
-		this_quest.next().css("left", width_popup);
-		this_quest.next().show();
-		$(".background_white").show();		
-		setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
-});
  
+   <?php
+	}
+  ?>
+  
   
 });
 </script>

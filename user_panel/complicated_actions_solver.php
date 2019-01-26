@@ -56,6 +56,13 @@ elseif(isset($_POST["load_new_incomers"])){
 		echo "<div class=\"a_list_of_incomers\">Brak zgłoszeń</div>";
 	}
 }
+elseif(isset($_POST["voting_quest_add"])){
+	$id_me=$_SESSION["Client"]->get_id_user();
+	$voting_process_quest_add = new Voting_system("quest_add%id_quest%".$_POST["quest_add"]);
+	if($_POST["voting_quest_add"]=="yes")	$voting_process_quest_add->voting(1);
+	else	$voting_process_quest_add->voting(0);
+	header('Location: user_panel.php?redirect=vote_page');	
+}
 elseif(isset($_POST["create_quest_form"])){
 	echo '
 	<form action="#" method="POST">

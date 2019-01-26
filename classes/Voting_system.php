@@ -26,7 +26,7 @@ class Voting_system{
 			
 		}
 		$this->table_name=$table_name;
-		$sql = "SELECT * FROM `inz_voting_system` WHERE `voting_subject`='$_voting_subject_string' LIMIT 1";
+		$sql = "SELECT * FROM `inz_voting_system` WHERE `voting_subject`='$_voting_subject_string' AND `voting_status`='1' LIMIT 1";
 		$result=$_SESSION["DB_connection"]->query_arr($sql);
 			
 		if(empty($result)){
@@ -38,25 +38,32 @@ class Voting_system{
 			}
 		}
 		else{
-			$this->id_voting_process=$result["id_voting_process"];
-			$voting_results_votes=explode("%",$result["voting_results"]);
-			foreach($voting_results_votes as $a_vote){
-				$a_vote_arr=explode("&&&",$a_vote);
-				$this->voting_results[]=array("id_user" => $a_vote_arr[0], "vote" => $a_vote_arr[1]);
+			$this->id_voting_process=$result[0]["id_voting_process"];
+			$voting_results_votes=explode("%",$result[0]["voting_results"]);
+			if(count($voting_results_votes)>=2){
+				foreach($voting_results_votes as $a_vote){
+					$a_vote_arr=explode("&&&",$a_vote);
+					$this->voting_results[]=array("id_user" => $a_vote_arr[0], "vote" => $a_vote_arr[1]);
+				}
 			}
+			elseif(!empty($result[0]["voting_results"])){
+				$a_vote_arr=explode("&&&",$result[0]["voting_results"]);
+				$this->voting_results[0]=array("id_user" => $a_vote_arr[0], "vote" => $a_vote_arr[1]);
+			}
+			else $this->voting_results=NULL;
 			
 		}
 		
 	}
 	
 	public function voting($vote){
-		$sql_how_many_voters="SELECT COUNT(`id_user`) FROM `inz_users` WHERE `id_group_user`='".$_SESSION["Client"]->give_id_group_user()."' AND `is_allowed_to_vote`='1' ";
+		$sql_how_many_voters="SELECT COUNT(`id_user`) as 'counted' FROM `inz_users` WHERE `id_group_user`='".$_SESSION["Client"]->give_id_group()."' AND `is_allowed_to_vote`='1' ";
 		$how_many_votes_arr=$_SESSION["DB_connection"]->query_arr($sql_how_many_voters);
-		$how_many_voters=(int)$how_many_votes_arr[0];
+		$how_many_voters=(int)$how_many_votes_arr[0]["counted"];
 		if($this->voting_subject["type"]=="voting_rights" OR $this->voting_subject["type"]=="completed_quests")$how_many_voters--;
 		$how_many_votes=0;
 		$decision_sum=0;
-		if(empty($this->voting_results)!==FALSE){
+		if(!empty($this->voting_results)){
 			$voting_string="";
 			$vote_submitted=false;
 			$id_current_user=$_SESSION["Client"]->get_id_user();
@@ -78,26 +85,41 @@ class Voting_system{
 			$how_many_votes=count($a_vote);
 			$voting_results_string=implode("%",$a_vote);
 		}
+		else{
+			$id_current_user=$_SESSION["Client"]->get_id_user();
+			$voting_results_string="$id_current_user&&&$vote";
+		}
 		if((float)$how_many_votes/(float)$how_many_voters>=0.75){
-			$sql_update_voting_results="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string' WHERE `id_voting_process`='".$this->id_voting_process."' ";
-			if((float)$decision_sum/(float)$how_many_voters>=0.75)	return $this->voting_complete_procedure();
-			else	return FALSE;
+
+			if((float)$decision_sum/(float)$how_many_voters>=0.75){
+				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='2' WHERE `id_voting_process`='".$this->id_voting_process."' ";
+				$_SESSION["DB_connection"]->query($sql_finish_voting);
+				return $this->voting_complete_procedure("yes");
+			}
+			else{
+				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='0' WHERE `id_voting_process`='".$this->id_voting_process."' ";
+				
+				$_SESSION["DB_connection"]->query($sql_finish_voting);
+				return $this->voting_complete_procedure("no");
+			}
 		}
 		else{
 			$sql_update_voting_results="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string' WHERE `id_voting_process`='".$this->id_voting_process."' ";
-			if($_SESSION["DB_connection"]->query_arr($sql_update_voting_results))		return TRUE;
+			if($_SESSION["DB_connection"]->query($sql_update_voting_results))		return TRUE;
 			else return FALSE;
 		}
 	}
 	
-	private function voting_complete_procedure(){
+	private function voting_complete_procedure($decision){
+		
 		switch($this->voting_subject["type"]){
 			case "quest_add":	
-											$sql="UPDATE `".$this->table_name."` SET `activation_status_quest`='1' WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
+											if($decision=="yes")	$sql="UPDATE `".$this->table_name."` SET `activation_status_quest`='1' WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
+											else $sql="UPDATE `".$this->table_name."` SET `activation_status_quest`='-1' WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
 											
 											break;
 			case "quest_delete":	
-											$sql="UPDATE `".$this->table_name."` SET `activation_status_quest`='-1' WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
+											if($decision=="yes")	$sql="UPDATE `".$this->table_name."` SET `activation_status_quest`='-1' WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
 											
 											break;
 			case "quest_edit":	
@@ -128,8 +150,22 @@ class Voting_system{
 											$sql="UPDATE `".$this->table_name."` SET `date_execution`='2000-01-01 00:00:00', `points_rewarded`='0' WHERE `id_last_execution`='".$this->voting_subject["id_last_execution"]."' ";	
 		}
 		if(isset($sql)) 	return $_SESSION["DB_connection"]->query($sql);
+		else return true;
 	}
 	
+	public function has_already_user_voted(){
+		$id_current_user=$_SESSION["Client"]->get_id_user();
+		if(!empty($this->voting_results)){
+			$id_current_user=$_SESSION["Client"]->get_id_user();
+			foreach($this->voting_results as $a_vote_arr){
+				if($a_vote_arr["id_user"]==$id_current_user){
+					if($a_vote_arr["vote"]) return "user_voted_yes";
+					else return "user_voted_no";
+				}
+			}
+		}
+		else return "user_voted_not";
+	}
 	
 }
 ?>
