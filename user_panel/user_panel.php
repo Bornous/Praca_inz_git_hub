@@ -130,7 +130,7 @@ $(document).ready(function(){
 	  }
 	});
    
-	$('.a_quest_to_edit').click(function(){
+	$('.voting_new_quest').click(function(){
 			var this_quest = $(this);
 			var width_popup = $(window).width()/2- this_quest.next().width()/2;
 			var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
@@ -140,7 +140,23 @@ $(document).ready(function(){
 			$(".background_white").show();		
 			setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
 	});
-
+	
+	
+	$('.voting_quests_to_edit').click(function(){
+			var this_quest = $(this);
+			$(".form_adding_quest").show();		
+			//$(".background_white").show();
+			console.log(this_quest.find("input[name=\"name_quest\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_name\"]").val(this_quest.find("input[name=\"name_quest\"]").val());
+			$(".form_adding_quest").find("textarea[name=\"quest_descr\"]").html(this_quest.find("input[name=\"descr_quest\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_points\"]").val(this_quest.find("input[name=\"points_quest\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_renewable_period_month\"]").val(this_quest.find("input[name=\"quest_renewable_period_month\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_renewable_period_day\"]").val(this_quest.find("input[name=\"quest_renewable_period_day\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_renewable_period_hour\"]").val(this_quest.find("input[name=\"quest_renewable_period_hour\"]").val());
+			$(".form_adding_quest").find("input[name=\"quest_renewable_period_min\"]").val(this_quest.find("input[name=\"quest_renewable_period_min\"]").val());
+	});
+	
+	
    <?php
 	}
 	elseif($user_panel_screen->get_action_name() == "vote_page"){

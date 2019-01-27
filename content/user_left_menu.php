@@ -11,10 +11,10 @@
 		<input type="hidden" name="action_name" value="vote_page">
 		<div class="menu_option" onclick="javascript:this.parentNode.submit();">Głosuj</div>
 	</form>
-	<form action="#"  method="POST">
+<!--	<form action="#"  method="POST">
 		<input type="hidden" name="action_name" value="sett_page">
 		<div class="menu_option" onclick="javascript:this.parentNode.submit();">Ustawienia</div>
-	</form>
+	</form> -->
 	<form action="../login.php"  method="GET">
 		<div class="menu_option" onclick="javascript:this.parentNode.submit();">Wyloguj się</div>
 	</form>

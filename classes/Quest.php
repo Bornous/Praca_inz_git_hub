@@ -25,8 +25,16 @@ class Quest{
 			<div class="name_quest">'.$this->name_quest.'</div>
 			<div class="desc_quest"><span>'.$this->descr_quest.'</span></div>
 			<div class="points_quest"><span>'.$this->points_quest.' pkt</span></div>
-			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
-		';
+			<div class="form_inputs">
+				<input type="hidden" name="id_quest" 			value="'.$this->id_quest.'">
+				<input type="hidden" name="points_quest" 	value="'.$this->points_quest.'">
+				<input type="hidden" name="name_quest" 	value="'.$this->name_quest.'">
+				<input type="hidden" name="descr_quest" 	value="'.$this->descr_quest.'">
+				<input type="hidden" name="quest_renewable_period_month"  	value="'.$this->renewable_period_quest_arr["months"].'">
+				<input type="hidden" name="quest_renewable_period_day"  		value="'.$this->renewable_period_quest_arr["days"].'">
+				<input type="hidden" name="quest_renewable_period_hour"  	value="'.$this->renewable_period_quest_arr["hours"].'">
+				<input type="hidden" name="quest_renewable_period_min"  		value="'.$this->renewable_period_quest_arr["minutes"].'">
+			</div>';
 		
 	}
 	public function display_quest_on_voting_page(){

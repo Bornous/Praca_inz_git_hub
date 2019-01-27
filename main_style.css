@@ -857,6 +857,11 @@ input[disabled]{
 	background-color: #ef5c5c4d;
 }
 
+.form_adding_quest{
+	display:none;
+}
+
+
 /* --- VOTE: submit incomers -------------------------------------------------------------------*/
 
 
