@@ -8,6 +8,7 @@ class Quest{
 	private $renewable_period_quest_arr;
 	private $date_last_execution;
 	private $activation_status_quest;
+	private $edit_str_quest;
 	
 	public  function __construct($data_arr) {
 		$this->id_quest= $data_arr["id_quest"];
@@ -18,6 +19,7 @@ class Quest{
 		$this->renewable_period_quest_arr= $this->explode_data_str($data_arr["renewable_period_quest"],false);
 		$this->date_last_execution= $this->explode_data_str($data_arr["date_execution"]);
 		$this->activation_status_quest= $data_arr["activation_status_quest"];
+		$this->edit_str_quest= $data_arr["edit_str_quest"];
 	}
 	
 	public function display_quest(){
@@ -37,14 +39,53 @@ class Quest{
 			</div>';
 		
 	}
-	public function display_quest_on_voting_page(){
-		echo '
-			<div class="name_quest"><span>Nazwa: </span><span>'.$this->name_quest.'</span></div>
-			<div class="desc_quest"><span>Opis: </span><span>'.$this->descr_quest.'</span></div>
-			<div class="renewable_period"><span>Czas odnowienia: </span><span>'.$this->renewable_period_quest_arr["months"].' miesięcy '.$this->renewable_period_quest_arr["days"].' dni '.$this->renewable_period_quest_arr["hours"].' godzin '.$this->renewable_period_quest_arr["minutes"].' minut <span></div>
-			<div class="points_quest"><span>Ilość przydzielanych punktów: </span><span>'.$this->points_quest.' pkt</span></div>
-			<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
-		';
+	public function display_quest_on_voting_page($mode = "default"){
+		switch($mode){
+			case "default":
+									echo '
+										<div class="name_quest"><span>Nazwa: </span><span>'.$this->name_quest.'</span></div>
+										<div class="desc_quest"><span>Opis: </span><span>'.$this->descr_quest.'</span></div>
+										<div class="renewable_period"><span>Czas odnowienia: </span><span>'.$this->renewable_period_quest_arr["months"].' miesięcy '.$this->renewable_period_quest_arr["days"].' dni '.$this->renewable_period_quest_arr["hours"].' godzin '.$this->renewable_period_quest_arr["minutes"].' minut <span></div>
+										<div class="points_quest"><span>Ilość przydzielanych punktów: </span><span>'.$this->points_quest.' pkt</span></div>
+										<div><input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'"></div>
+									';
+									break;
+			case "edit":
+									$data_arr_arr=explode(", ",$this->edit_str_quest);
+									foreach($data_arr_arr as $a_row){
+										$data_arr=explode("=",$a_row);
+										$edited_data_arr[trim($data_arr[0],"`")]=trim($data_arr[1],"'");
+										
+									}
+									$edited_data_arr["renewable_period_quest"]=explode_data_str($edited_data_arr["renewable_period_quest"],false);
+									$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									$edited_descr_quest=($edited_data_arr["descr_quest"]==$this->descr_quest)?"":"<p><span>Nowy opis:</span><span>->".$edited_data_arr["descr_quest"]."</span></p>";
+									/*$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									$edited_name_quest=($edited_data_arr["name_quest"]==$this->name_quest)?"":"<span>->".$edited_data_arr["name_quest"]."</span>";
+									*/
+									echo '
+										<div class="name_quest">
+											<span>Nazwa: </span><span>'.$this->name_quest.'</span>'.$edited_name_quest.'
+										</div>
+										<div class="desc_quest">
+											<span>Opis: </span><span>'.$this->descr_quest.'</span>'.$edited_descr_quest.'
+										</div>
+										<div class="renewable_period">
+											<span>Czas odnowienia: </span>
+											<span>'.$this->renewable_period_quest_arr["months"].' miesięcy '.$this->renewable_period_quest_arr["days"].' dni '.$this->renewable_period_quest_arr["hours"].' godzin '.$this->renewable_period_quest_arr["minutes"].' minut </span>
+										</div>
+										<div class="points_quest">
+											<span>Ilość przydzielanych punktów: </span><span>'.$this->points_quest.' pkt</span>
+										</div>
+										<div>
+											<input type="hidden" name="id_quest" value="'.$this->id_quest.'"><input type="hidden" name="points_quest" value="'.$this->points_quest.'">
+										</div>
+									';
+									break;
+		}
 		
 	}
 	

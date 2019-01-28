@@ -201,7 +201,7 @@ class Panel_screen{
 	}
 	
 	public function create_vote_page_quests(){		
-		echo '<div class="background_white hidden"></div>';
+		echo '<div class="background_white hidden"><div class="return_button_new_quest voting_page_return_button" ><span><i class="fas fa-arrow-circle-left"></i></span><span>Wróć</span></div></div>';
 		echo '<div class="right_contener">';
 		$id_group=$_SESSION["Client"]->give_id_group();
 		$sql_new_quests="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='2'";
@@ -250,9 +250,29 @@ class Panel_screen{
 					$FLAG_title=false;
 				}
 				$the_quest = new Quest($a_quest);
-				echo "<div class=\"a_quest_to_edit\">";
+				echo "<div class=\"a_quest_to_edit voting_edited_quest\">";
 				$the_quest->display_quest();
 				echo "</div>";
+				echo '						
+						<div class="voting_popup new_q">
+							<div><span class="popup_title">Proponowana edycja:</span></div>
+							<div class="popup_q_info">';
+					$the_quest->display_quest_on_voting_page("edit");
+					echo'</div>
+							<div class = "answers_box_popup">
+								<form action="complicated_actions_solver.php" method="POST">
+								<input type="hidden" name="voting_quest_edit" value="yes">
+								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
+								<div class="answer_popup answ_yes" >Tak</div>
+								</form>
+								<form action="complicated_actions_solver.php" method="POST">
+								<input type="hidden" name="voting_quest_edit" value="no">
+								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
+								<div class="answer_popup answ_no" >Nie</div>
+								</form>
+							</div>
+						</div>
+				';
 					
 				
 			}
@@ -284,29 +304,32 @@ class Panel_screen{
 		$sql="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NULL ";
 		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql)){
 			$FLAG_title=true;
-			echo '	<div class="form_adding_quest">
+			echo '	
+						
+						<div class="form_adding_quest voting_page_edit_form">
 							<form action="complicated_actions_solver.php" method="post">
 								<input type="hidden" name="edit_a_quest" value="true">
+								<input type="hidden" name="edit_quest_id" value="">
 								<div class="login_group">
 								<span>Nazwa: </span>
-												<input class="login_control" name="quest_name" placeholder="Wpisz nazwę zadania" type="text">
+												<input class="login_control" name="edit_name" placeholder="Wpisz nazwę zadania" type="text">
 								</div>
 								<div class="login_group">
 								<span>Opis: </span>
-												<textarea class="login_control" name="quest_descr" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
+												<textarea class="login_control" name="edit_descr" rows="7" cols="60" placeholder="Tutaj zamieść opis zadania"></textarea>
 								</div>
 								<div class="login_group datetime_inputs">
 												<p><span>Wybierz co jaki czas zadanie ma się ponownie pojawiać:</span></p>
-												<label>Miesięcy: <input type="number" name="quest_renewable_period_month" min="0" max="12" step="1" value="0"></label>
-												<label>Dni: <input type="number" name="quest_renewable_period_day" min="0" max="31" step="1" value="1"></label>
-												<label>Godzin: <input type="number" name="quest_renewable_period_hour" min="0" max="23" step="1" value="0"></label>
-												<label>Minut: <input type="number" name="quest_renewable_period_min" min="0" max="59" step="1" value="0"></label>
-												<input type="hidden" 	name="quest_renewable_period_sec" value="0">
+												<label>Miesięcy: <input type="number" name="edit_renewable_period_month" min="0" max="12" step="1" value="0"></label>
+												<label>Dni: <input type="number" name="edit_renewable_period_day" min="0" max="31" step="1" value="1"></label>
+												<label>Godzin: <input type="number" name="edit_renewable_period_hour" min="0" max="23" step="1" value="0"></label>
+												<label>Minut: <input type="number" name="edit_renewable_period_min" min="0" max="59" step="1" value="0"></label>
+												<input type="hidden" 	name="edit_renewable_period_sec" value="0">
 								</div>
 								<div class="login_group">
-												<label>Liczba punktów za zrobienie zadania: <input type="number" name="quest_points" min="1"  max="999999" step="1" value="100"></label>
+												<label>Liczba punktów za zrobienie zadania: <input type="number" name="edit_points" min="1"  max="999999" step="1" value="100"></label>
 								</div>
-								<input id="submitbutton" type="submit" value="Wyślij propozycję dodania zadania" class="login_submit_button">
+								<input id="submitbutton" type="submit" value="Wyślij propozycję edycji" class="login_submit_button">
 							</form>
 						</div>';
 			foreach($result_quests as $a_quest){			
@@ -317,8 +340,7 @@ class Panel_screen{
 				$the_quest = new Quest($a_quest);
 				echo "<div class=\"a_quest_to_edit voting_quests_to_edit grey_color\">";
 				$the_quest->display_quest();
-				echo "</div>";
-					
+				echo "</div>";				
 				
 			}
 		}

@@ -857,10 +857,18 @@ input[disabled]{
 	background-color: #ef5c5c4d;
 }
 
-.form_adding_quest{
+.voting_page_edit_form{
 	display:none;
+	position:fixed;
+	margin:0px;
+	padding:40px;
+	z-index:9998;
 }
 
+.voting_page_return_button{
+	margin:10px;
+	z-index:9999;
+}
 
 /* --- VOTE: submit incomers -------------------------------------------------------------------*/
 

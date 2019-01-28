@@ -109,11 +109,28 @@ elseif(isset($_POST["add_a_quest"])){
 	if($_SESSION["DB_connection"]->prepare_bind_param($sql_insert, $params_to_bind)){
 		$id_quest = $_SESSION["DB_connection"]->give_insert_id();
 		$start_voting_procedure= new Voting_system("quest_add%id_quest%$id_quest");
-		print_r($start_voting_procedure);
+		//print_r($start_voting_procedure);
 		header('Location: user_panel.php?redirect=quests_page&quest_adding=success');
 	}
 	else{
 		header('Location: user_panel.php?redirect=quests_page&quest_adding=failure');
+	}
+}
+elseif(isset($_POST["edit_a_quest"])){
+	
+	$id_quest = $_POST["edit_quest_id"];
+	$renewable_period = ($_POST["edit_renewable_period_month"] < 10 ? "0".$_POST["edit_renewable_period_month"] : $_POST["edit_renewable_period_month"])."-".($_POST["edit_renewable_period_day"] < 10 ?"0".$_POST["edit_renewable_period_day"] : $_POST["edit_renewable_period_day"])." ".($_POST["edit_renewable_period_hour"] < 10 ?"0".$_POST["edit_renewable_period_hour"] : $_POST["edit_renewable_period_hour"]).":".($_POST["edit_renewable_period_min"] < 10 ? "0".$_POST["edit_renewable_period_min"] : $_POST["edit_renewable_period_min"]).":00";
+	$edit_str_quest="`name_quest`='".$_POST["edit_name"] ."', `descr_quest`='".$_POST["edit_descr"] ."', `points_quest`='".$_POST["edit_points"] ."', `renewable_period_quest`='".$renewable_period ."'";
+	
+	$params_to_bind = array("s",&$edit_str_quest);
+
+	$sql_update="UPDATE `inz_quests` SET `edit_str_quest`=? WHERE `id_quest`='$id_quest'";
+	if($_SESSION["DB_connection"]->prepare_bind_param($sql_update, $params_to_bind)){
+		$start_voting_procedure= new Voting_system("quest_edit%id_quest%$id_quest");
+		header('Location: user_panel.php?redirect=vote_page_quests&quest_edit=success');
+	}
+	else{
+		header('Location: user_panel.php?redirect=vote_page_quests&quest_edit=failure');
 	}
 }
 

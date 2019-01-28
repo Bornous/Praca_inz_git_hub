@@ -124,15 +124,12 @@ class Voting_system{
 											break;
 			case "quest_edit":	
 											$sql_extract_edits="SELECT `edit_str_quest` FROM `".$this->table_name."` WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
+											$string_with_edits="";
 											if($result_edits_data=$_SESSION["DB_connection"]->query_arr($sql_extract_edits)){
-												$edits_data=explode("%%%",$result_edits_data);
-												$string_with_edits="";
-												foreach($edits_data as $a_column_data){
-													$edits_data_arr=explode("&&&",$a_column_data);
-													$string_with_edits.=" `".$edits_data_arr[0]."`='".$edits_data_arr[1]."', ";
-												}
+												$string_with_edits=$result_edits_data[0]["edit_str_quest"];
+												
 											}
-											$sql="UPDATE `".$this->table_name."` SET $string_with_edits `edit_str_quest`=NULL WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";										
+											$sql="UPDATE `".$this->table_name."` SET $string_with_edits, `edit_str_quest`=NULL WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";										
 											
 											break;
 											
