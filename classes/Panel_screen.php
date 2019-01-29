@@ -166,11 +166,11 @@ class Panel_screen{
 						case "incomers":		$numbers_arr[$_voting_subject_arr[0]]++;													
 														break;
 														
-						case "voting_rights":				$numbers_arr[$_voting_subject_arr[0]]++;													
+/*						case "voting_rights":				$numbers_arr[$_voting_subject_arr[0]]++;													
 																	break;
 														
 						case "completed_quests":		$numbers_arr[$_voting_subject_arr[0]]++;													
-																	break;
+																	break;*/
 					}
 				}
 			}
@@ -190,8 +190,8 @@ class Panel_screen{
 			echo '<div class="right_contener">';
 			echo '	<div class="vote_option" ><span class="vote_option_text">Dodaj/Usuń/Edytuj Zadania</span><input type="hidden" name="vote_action_name" value="add_edit_quest"><span class="numbers_of_cases'.$hidden_class["quest_"].'">'.$numbers_arr["quest_"].'</span></div>';
 			echo '	<div class="vote_option" ><span class="vote_option_text">Przyjęcie członka</span><input type="hidden" name="vote_action_name" value="new_incomer"><span class="numbers_of_cases'.$hidden_class["incomers"].'">'.$numbers_arr["incomers"].'</span></div>';
-			echo '	<div class="vote_option" ><span class="vote_option_text">Miesięczne zablokowanie prawa do głosu</span><input type="hidden" name="vote_action_name" value="voting_right"><span class="numbers_of_cases'.$hidden_class["voting_rights"].'">'.$numbers_arr["voting_rights"].'</span></div>';
-			echo '	<div class="vote_option" ><span class="vote_option_text">Demokratyczne zweryfikowanie wykonania zadania</span><input type="hidden" name="vote_action_name" value="quest_checking"><span class="numbers_of_cases'.$hidden_class["completed_quests"].'">'.$numbers_arr["completed_quests"].'</span></div>';
+			//echo '	<div class="vote_option" ><span class="vote_option_text">Miesięczne zablokowanie prawa do głosu</span><input type="hidden" name="vote_action_name" value="voting_right"><span class="numbers_of_cases'.$hidden_class["voting_rights"].'">'.$numbers_arr["voting_rights"].'</span></div>';
+			//echo '	<div class="vote_option" ><span class="vote_option_text">Demokratyczne zweryfikowanie wykonania zadania</span><input type="hidden" name="vote_action_name" value="quest_checking"><span class="numbers_of_cases'.$hidden_class["completed_quests"].'">'.$numbers_arr["completed_quests"].'</span></div>';
 			echo '</div>';
 			echo '<div class="clear_both"></div>';
 		}
@@ -415,16 +415,7 @@ class Panel_screen{
 		echo '</div>';
 		echo '<div class="clear_both"></div>';
 	}
-		
-	public function create_sett_page(){
-		echo '<div class="right_contener">';
-		echo '	<div style="cursor:pointer">Zmiana nazwy</div>';
-		echo '	<div style="cursor:pointer">Usunięcie konta</div>';
-		echo '	<div style="cursor:pointer">Dodaj/Usuń/Edytuj Zadania</div>';
-		echo '</div>';
-		echo '<div class="clear_both"></div>';
-	}
-	
+
 	public function get_action_name(){
 		return $this->action_name;
 	}
@@ -445,9 +436,7 @@ class Panel_screen{
 			case "vote_page_incomers":
 				$this->create_vote_page_incomers();				
 				break;
-			case "sett_page":
-				$this->create_sett_page();				
-				break;
+
 			default:
 				$this->create_quests_page();				
 				break;			

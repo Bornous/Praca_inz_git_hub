@@ -7,7 +7,7 @@ if(isset($_POST["group_name"])){
 		$_SESSION["Client"]->assigment_to_a_group($new_group);
 		$sql_voting_right = "UPDATE `inz_users` SET `is_allowed_to_vote` = '1' WHERE `id_user` = '".$_SESSION["Client"]->get_id_user()."'";
 		$_SESSION["DB_connection"]->query($sql_voting_right);
-		$_SESSION["Client"]->load_the_voting_right( '1');
+		$_SESSION["Client"]->load_the_voting_right('1');
 		header('Location: user_panel.php?login=success&group_added=true');
 	}
 	else{
@@ -18,6 +18,7 @@ elseif(isset($_POST["group_user"])){
 	$new_group = new Group();
 	if( $joining_group=$new_group->join_one($_POST["group_user"])){
 		$_SESSION["Client"]->assigment_to_a_group($new_group);
+		$voting_for_right = new Voting_system("incomers%id_user%".$_SESSION["Client"]->get_id_user());
 		header('Location: user_panel.php?login=success&group_exist=true');
 	}
 	else{
