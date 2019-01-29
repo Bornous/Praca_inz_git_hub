@@ -61,7 +61,7 @@ elseif(isset($_POST["voting_quest_add"])){
 	$voting_process_quest_add = new Voting_system("quest_add%id_quest%".$_POST["quest_add"]);
 	if($_POST["voting_quest_add"]=="yes")	$voting_process_quest_add->voting(1);
 	else	$voting_process_quest_add->voting(0);
-	header('Location: user_panel.php?redirect=vote_page');	
+	header('Location: user_panel.php?redirect=vote_page_quests');		
 }
 elseif(isset($_POST["create_quest_form"])){
 	echo '
@@ -132,6 +132,30 @@ elseif(isset($_POST["edit_a_quest"])){
 	else{
 		header('Location: user_panel.php?redirect=vote_page_quests&quest_edit=failure');
 	}
+}
+elseif(isset($_POST["voting_quest_edit"])){
+	
+	$id_me=$_SESSION["Client"]->get_id_user();
+	$voting_process_quest_edit = new Voting_system("quest_edit%id_quest%".$_POST["quest_edit"]);
+	if($_POST["voting_quest_edit"]=="yes")	$voting_process_quest_edit->voting(1);
+	else	$voting_process_quest_edit->voting(0);
+	header('Location: user_panel.php?redirect=vote_page_quests');	
+}
+elseif(isset($_POST["voting_quest_delete"])){
+	
+	$id_me=$_SESSION["Client"]->get_id_user();
+	$voting_process_quest_edit = new Voting_system("quest_delete%id_quest%".$_POST["quest_delete"]);
+	if($_POST["voting_quest_delete"]=="yes")	$voting_process_quest_edit->voting(1);
+	else	$voting_process_quest_edit->voting(0);
+	header('Location: user_panel.php?redirect=vote_page_quests');	
+}
+elseif(isset($_POST["voting_incomers"])){
+	
+	$id_me=$_SESSION["Client"]->get_id_user();
+	$voting_process_quest_edit = new Voting_system("incomers%id_user%".$_POST["incomer_id"]);
+	if($_POST["voting_incomers"]=="yes")	$voting_process_quest_edit->voting(1);
+	else	$voting_process_quest_edit->voting(0);
+	header('Location: user_panel.php?redirect=vote_page');	
 }
 
 ?>

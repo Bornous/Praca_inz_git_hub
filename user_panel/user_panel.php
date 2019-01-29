@@ -175,6 +175,17 @@ $(document).ready(function(){
 			
 	});
 	
+	$('.voting_delete_quest ').click(function(){
+			var this_quest = $(this);
+			var width_popup = $(window).width()/2- this_quest.next().width()/2;
+			var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
+			this_quest.next().css("top", height_popup);
+			this_quest.next().css("left", width_popup);
+			this_quest.next().show();
+			$(".background_white").show();		
+			setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
+	});
+	
 	
 	$('.return_button_new_quest').click(function(){	
 		$(".background_white").hide().fadeOut( 400 );
@@ -195,18 +206,7 @@ $(document).ready(function(){
 			
 	   }
 	   else if (this_option.find( "input[name='vote_action_name']" ).val()== "new_incomer"){
-		   $.post("complicated_actions_solver.php",
-				{
-				  load_new_incomers: true
-				},
-				function(data,status){
-					if(status=="success"){
-						$(".right_contener").html(data);
-					}
-					else{
-						alert("FAILURE !!!" + data + "\nStatus: " + status);
-					}
-			});
+		   window.location.href="user_panel.php?redirect=vote_page_incomers";
 	   }
 	   else if (this_option.find( "input[name='vote_action_name']" ).val()== "voting_right"){
 		   $.post("complicated_actions_solver.php",
@@ -240,6 +240,49 @@ $(document).ready(function(){
 	   console.log("vote_option_failed_to_rocognite");
 	   }
   });
+ 
+   <?php
+	}
+	elseif($user_panel_screen->get_action_name() == "vote_page_incomers"){
+  
+  ?>
+ 
+	$(".answ_yes").click(function(){
+		this.parentNode.submit();
+	});
+	
+	$(".answ_no").click(function(){
+		this.parentNode.submit();
+	});
+	
+	$(".background_white").click(function(){
+		$(".background_white").hide().fadeOut( 400 );
+		$(".voting_popup ").hide().fadeOut( 400 );		
+	});
+	
+	$(document).keyup(function(e) {
+	  if (e.keyCode === 27) {
+			$(".background_white").hide().fadeOut( 400 );
+			$(".voting_popup ").hide().fadeOut( 400 );
+	  }
+	});
+  
+  $('.voting_incomer ').click(function(){
+			var this_quest = $(this);
+			var width_popup = $(window).width()/2- this_quest.next().width()/2;
+			var height_popup = $(window).height()/2- this_quest.next().height()/2;	  
+			this_quest.next().css("top", height_popup);
+			this_quest.next().css("left", width_popup);
+			this_quest.next().show();
+			$(".background_white").show();		
+			setTimeout(function(){this_quest.next().css("opacity","1");}, 10);
+	});
+	
+	
+	$('.return_button_new_quest').click(function(){	
+		$(".background_white").hide().fadeOut( 400 );
+		$(".voting_popup ").hide().fadeOut( 400 );
+	});
  
    <?php
 	}

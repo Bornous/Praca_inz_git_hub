@@ -196,7 +196,7 @@ class Panel_screen{
 			echo '<div class="clear_both"></div>';
 		}
 		else{
-			echo '<div class="right_contener"><div class="vote_option_not_allowed" >Obecnie nie posiadasz uprawnień wymaganych do głosowania. Jeżeli niedawno dołączyłeś do grupy jest duża szansa, że członkowie nie podjęli decyzji o przyjęciu. Jeżeli natomiast jesteś już przyjętym członkiem to najprawdopodobniej twoje prawo do głosowania zostało zawieszone - odnawia się ono na początku każdego miesiąca.</div></div>';
+			echo '<div class="right_contener"><div class="vote_option_not_allowed" >Obecnie nie posiadasz uprawnień wymaganych do głosowania. Jeżeli niedawno dołączyłeś do grupy jest duża szansa, że członkowie nie podjęli decyzji o przyjęciu. Jeżeli natomiast jesteś już przyjętym członkiem to najprawdopodobniej twoje prawo do głosowania zostało zawieszone - odnawia się ono na początku każdego miesiąca.</div></div><div class="clear_both"></div>';
 		}
 	}
 	
@@ -250,7 +250,9 @@ class Panel_screen{
 					$FLAG_title=false;
 				}
 				$the_quest = new Quest($a_quest);
-				echo "<div class=\"a_quest_to_edit voting_edited_quest\">";
+				$voting_subject = "quest_edit%id_quest%".$the_quest->get_id_quest();
+				$this_voting_process = new Voting_system($voting_subject);
+				echo "<div class=\"a_quest_to_edit voting_edited_quest ".$this_voting_process->has_already_user_voted()." \">";
 				$the_quest->display_quest();
 				echo "</div>";
 				echo '						
@@ -262,12 +264,12 @@ class Panel_screen{
 							<div class = "answers_box_popup">
 								<form action="complicated_actions_solver.php" method="POST">
 								<input type="hidden" name="voting_quest_edit" value="yes">
-								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
+								<input type="hidden" name="quest_edit" value="'.$the_quest->get_id_quest().'">
 								<div class="answer_popup answ_yes" >Tak</div>
 								</form>
 								<form action="complicated_actions_solver.php" method="POST">
 								<input type="hidden" name="voting_quest_edit" value="no">
-								<input type="hidden" name="quest_add" value="'.$the_quest->get_id_quest().'">
+								<input type="hidden" name="quest_edit" value="'.$the_quest->get_id_quest().'">
 								<div class="answer_popup answ_no" >Nie</div>
 								</form>
 							</div>
@@ -277,28 +279,50 @@ class Panel_screen{
 				
 			}
 		}
-		$sql_to_delete_q="SELECT `voting_subject` FROM `inz_voting_system` WHERE `voting_status`='1' AND `id_group_user`= '$id_group'  AND `voting_subject` LIKE 'quest_delete[%]id_quest[%]%'  ";
-										
+		$sql_to_delete_q="SELECT `voting_subject` FROM `inz_voting_system` WHERE `voting_status`='1' AND `id_group_user`= '$id_group'  AND `voting_subject` LIKE 'quest_delete%id_quest%'  ";
 		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql_to_delete_q)){
 			$list_of_quests = "";
 			foreach($result_quests as $a_voting_subject){
 				$exploded = explode("%",$a_voting_subject["voting_subject"]);
-				$list_of_quests.=" AND `id_quest`='".$exploded[2]."'";
+				$list_of_quests_arr[]="`id_quest`='".$exploded[2]."'";
 			}
+			if(isset($list_of_quests_arr))$list_of_quests=" AND (".implode(" OR ",$list_of_quests_arr)." )";
 			$sql_find_this_quests = "SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' $list_of_quests ";
-			
-			$FLAG_title=true;
-			foreach($result_quests as $a_quest){
-				if($FLAG_title){
-					echo '<div class="title_quests_list">Zgłoszone do usunięcia</div>';
-					$FLAG_title=false;
-				}
-				$the_quest = new Quest($a_quest);
-				echo "<div class=\"a_quest_to_edit\">";
-				$the_quest->display_quest();
-				echo "</div>";
+			if($result_quests_arr = $_SESSION["DB_connection"]->query_arr($sql_find_this_quests)){
+				$FLAG_title=true;
+				foreach($result_quests_arr as $a_quest){
+					if($FLAG_title){
+						echo '<div class="title_quests_list">Zgłoszone do usunięcia</div>';
+						$FLAG_title=false;
+					}
+					$the_quest = new Quest($a_quest);
+					$voting_subject = "quest_delete%id_quest%".$the_quest->get_id_quest();
+					$this_voting_process = new Voting_system($voting_subject);
+					echo "<div class=\"a_quest_to_edit voting_delete_quest ".$this_voting_process->has_already_user_voted()." \">";
+					$the_quest->display_quest();
+					echo "</div>";
+					echo '						
+							<div class="voting_popup to_delete_popup">
+								<div><span class="popup_title">Czy chcesz usunąć to zadanie?</span></div>
+								<div class="popup_q_info">';
+						$the_quest->display_quest_on_voting_page();
+						echo'</div>
+								<div class = "answers_box_popup">
+									<form action="complicated_actions_solver.php" method="POST">
+									<input type="hidden" name="voting_quest_delete" value="yes">
+									<input type="hidden" name="quest_delete" value="'.$the_quest->get_id_quest().'">
+									<div class="answer_popup answ_yes" >Tak</div>
+									</form>
+									<form action="complicated_actions_solver.php" method="POST">
+									<input type="hidden" name="voting_quest_delete" value="no">
+									<input type="hidden" name="quest_delete" value="'.$the_quest->get_id_quest().'">
+									<div class="answer_popup answ_no" >Nie</div>
+									</form>
+								</div>
+							</div>
+					';
 					
-				
+				}
 			}
 		}
 		$sql="SELECT * FROM `inz_quests` WHERE `id_group_user`= '$id_group' AND `activation_status_quest`='1' AND `edit_str_quest` IS NULL ";
@@ -348,6 +372,50 @@ class Panel_screen{
 		echo '<div class="clear_both"></div>';
 	}
 		
+	public function create_vote_page_incomers(){
+		echo '<div class="background_white hidden"><div class="return_button_new_quest voting_page_return_button" ><span><i class="fas fa-arrow-circle-left"></i></span><span>Wróć</span></div></div>';
+		echo '<div class="right_contener">';
+		$id_group=$_SESSION["Client"]->give_id_group();
+		$sql_new_incomers="SELECT * FROM `inz_users` WHERE `id_group_user`= '$id_group' AND `is_allowed_to_vote`='2'";
+		if($result_incomers = $_SESSION["DB_connection"]->query_arr($sql_new_incomers)){
+			$FLAG_title=true;
+			foreach($result_incomers as $an_incomer){
+				if($FLAG_title){
+					echo '<div class="title_quests_list">Nowo czekające osoby na przyznanie prawa głosu:</div>';
+					$FLAG_title=false;
+				}
+				$voting_subject = "incomers%id_user%".$an_incomer["id_user"];
+				$this_voting_process = new Voting_system($voting_subject);
+				echo "<div class=\"a_quest_to_edit voting_incomer ".$this_voting_process->has_already_user_voted()." \">";
+				echo '<div class="name_quest">'.$an_incomer["name_user"].'</div>';
+				echo '<div class="desc_quest">'.$an_incomer["login_user"].'</div>';
+				echo "</div>";
+				echo '						
+						<div class="voting_popup new_q">
+							<div><span class="popup_title">Czy zgadzasz się na przyznanie praw ( '.$an_incomer["name_user"].' ) ?</span></div>
+							<div class="popup_q_info">';
+					echo'</div>
+							<div class = "answers_box_popup">
+								<form action="complicated_actions_solver.php" method="POST">
+								<input type="hidden" name="voting_incomers" value="yes">
+								<input type="hidden" name="incomer_id" value="'.$an_incomer["id_user"].'">
+								<div class="answer_popup answ_yes" >Tak</div>
+								</form>
+								<form action="complicated_actions_solver.php" method="POST">
+								<input type="hidden" name="voting_incomers" value="no">
+								<input type="hidden" name="incomer_id" value="'.$an_incomer["id_user"].'">
+								<div class="answer_popup answ_no" >Nie</div>
+								</form>
+							</div>
+						</div>
+				';
+				
+			}
+		}
+		echo '</div>';
+		echo '<div class="clear_both"></div>';
+	}
+		
 	public function create_sett_page(){
 		echo '<div class="right_contener">';
 		echo '	<div style="cursor:pointer">Zmiana nazwy</div>';
@@ -373,7 +441,9 @@ class Panel_screen{
 				$this->create_vote_page();				
 				break;
 			case "vote_page_quests":
-				$this->create_vote_page_quests();				
+				$this->create_vote_page_quests();
+			case "vote_page_incomers":
+				$this->create_vote_page_incomers();				
 				break;
 			case "sett_page":
 				$this->create_sett_page();				
