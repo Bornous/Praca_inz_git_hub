@@ -433,6 +433,7 @@ class Panel_screen{
 				break;
 			case "vote_page_quests":
 				$this->create_vote_page_quests();
+				break;
 			case "vote_page_incomers":
 				$this->create_vote_page_incomers();				
 				break;
