@@ -17,14 +17,9 @@ class Group{
 	}
 		
 	public function create_new_one($_name_group){
-		$sql_count="SELECT COUNT(`id_group`) as 'total' FROM `inz_group_users` WHERE 1=1";
-		$id_new_group  = 1;
-		if($counted_groups = $_SESSION["DB_connection"]->query($sql_count)){
-			$id_new_group = $counted_groups+1;
-		}
-		$sql_create_new_group = "INSERT INTO `inz_group_users` (`id_group`,`name_group`) VALUES('$id_new_group','$_name_group')";
+		$sql_create_new_group = "INSERT INTO `inz_group_users` (`name_group`) VALUES('$_name_group')";
 		if ($_SESSION["DB_connection"]->query($sql_create_new_group)){
-			$this->id_group=$id_new_group;
+			$this->id_group=$_SESSION["DB_connection"]->give_insert_id();
 			$this->name_group=$_name_group;
 			
 			return TRUE;
@@ -49,10 +44,6 @@ class Group{
 		}
 	}
 	
-	public function upload_group_from_db($_id_group){
-		
-	}
-	
-	
+
 }
 ?>

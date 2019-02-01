@@ -64,10 +64,7 @@ class Panel_screen{
 				}
 			}
 		}
-		else{
-			echo $sql_search;
-			return false;
-		}
+		
 	}
 	
 	public function create_quests_page(){
@@ -143,7 +140,11 @@ class Panel_screen{
 			echo '</div>';
 			echo '<div class="clear_both"></div>';
 		}			
-		else echo "DB ERROR sql:".$sql_search;
+		else{
+			echo '<div class="right_contener">Obecnie żaden z użytkowników grupy nie wykonał żadnych zadań - proszę przejść do zakłądki "Zadania".';
+			echo '</div>';
+			echo '<div class="clear_both"></div>';
+		}
 
 		
 	}
@@ -174,13 +175,13 @@ class Panel_screen{
 					}
 				}
 			}
-			else{
+	/*		else{
 				$sql_search_for_voting_decision = "SELECT `voting_decision_date` FROM `inz_voting_system` WHERE `voting_subject`='voting_rights%id_user%".$_SESSION["Client"]->get_id_user()."' AND `voting_status`='2' ORDER BY `voting_decision_date` DESC LIMIT 1";
 				if($results_voting_ban = $_SESSION["DB_connection"]->query_arr($sql_search_for_voting_decision)){
 					
 				}
 				echo "<div>Sth wrong with these searchings... maybve...</div>"; 
-			}
+			}*/
 			
 			foreach($numbers_arr as $a_type => $an_vote_option_number){
 				if($an_vote_option_number==0)	$hidden_class[$a_type] = " hidden";

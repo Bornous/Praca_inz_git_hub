@@ -89,9 +89,10 @@ class Voting_system{
 			$id_current_user=$_SESSION["Client"]->get_id_user();
 			$voting_results_string="$id_current_user&&&$vote";
 		}
-		if((float)$how_many_votes/(float)$how_many_voters>=0.75){
 
-			if((float)$decision_sum/(float)$how_many_voters>=0.75){
+		if((float)$how_many_votes/(float)$how_many_voters>=0.51){
+
+			if((float)$decision_sum/(float)$how_many_voters>=0.51){
 				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='2' WHERE `id_voting_process`='".$this->id_voting_process."' ";
 				$_SESSION["DB_connection"]->query($sql_finish_voting);
 				return $this->voting_complete_procedure("yes");
@@ -123,14 +124,17 @@ class Voting_system{
 											
 											break;
 			case "quest_edit":	
-											$sql_extract_edits="SELECT `edit_str_quest` FROM `".$this->table_name."` WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
-											$string_with_edits="";
-											if($result_edits_data=$_SESSION["DB_connection"]->query_arr($sql_extract_edits)){
-												$string_with_edits=$result_edits_data[0]["edit_str_quest"];
-												
+											if($decision=="yes"){
+												$sql_extract_edits="SELECT `edit_str_quest` FROM `".$this->table_name."` WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";
+												$string_with_edits="";
+												if($result_edits_data=$_SESSION["DB_connection"]->query_arr($sql_extract_edits)){
+													$string_with_edits=$result_edits_data[0]["edit_str_quest"];
+													
+												}
+												$sql="UPDATE `".$this->table_name."` SET $string_with_edits, `edit_str_quest`=NULL WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";	
 											}
-											$sql="UPDATE `".$this->table_name."` SET $string_with_edits, `edit_str_quest`=NULL WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";										
-											
+											else $sql="UPDATE `".$this->table_name."` SET `edit_str_quest`=NULL WHERE `id_quest`='".$this->voting_subject["id_quest"]."' ";	
+										
 											break;
 											
 			case "incomers":
