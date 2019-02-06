@@ -9,6 +9,7 @@ class Quest{
 	private $date_last_execution;
 	private $activation_status_quest;
 	private $edit_str_quest;
+	private $premium_multiplier;
 	
 	public  function __construct($data_arr) {
 		$this->id_quest= $data_arr["id_quest"];
@@ -20,10 +21,31 @@ class Quest{
 		$this->date_last_execution= $this->explode_data_str($data_arr["date_execution"]);
 		$this->activation_status_quest= $data_arr["activation_status_quest"];
 		$this->edit_str_quest= $data_arr["edit_str_quest"];
+		$this->premium_multiplier = 1;
 	}
 	
-	public function display_quest(){
-		echo '
+	public function display_quest($do_add_premium_multiplier = false){
+		if($do_add_premium_multiplier){
+			$points = $this->points_quest*$this->premium_multiplier;
+			if($this->premium_multiplier > 1) $prem_points_class = "premium_points";
+			else $prem_points_class = "";
+			echo '
+			<div class="name_quest">'.$this->name_quest.'</div>
+			<div class="desc_quest"><span>'.$this->descr_quest.'</span></div>
+			<div class="points_quest '.$prem_points_class.'"><span>'.$points.' pkt</span></div>
+			<div class="form_inputs">
+				<input type="hidden" name="id_quest" 			value="'.$this->id_quest.'">
+				<input type="hidden" name="points_quest" 	value="'.$points.'">
+				<input type="hidden" name="name_quest" 	value="'.$this->name_quest.'">
+				<input type="hidden" name="descr_quest" 	value="'.$this->descr_quest.'">
+				<input type="hidden" name="quest_renewable_period_month"  	value="'.$this->renewable_period_quest_arr["months"].'">
+				<input type="hidden" name="quest_renewable_period_day"  		value="'.$this->renewable_period_quest_arr["days"].'">
+				<input type="hidden" name="quest_renewable_period_hour"  	value="'.$this->renewable_period_quest_arr["hours"].'">
+				<input type="hidden" name="quest_renewable_period_min"  		value="'.$this->renewable_period_quest_arr["minutes"].'">
+			</div>';
+		}
+		else{
+			echo '
 			<div class="name_quest">'.$this->name_quest.'</div>
 			<div class="desc_quest"><span>'.$this->descr_quest.'</span></div>
 			<div class="points_quest"><span>'.$this->points_quest.' pkt</span></div>
@@ -37,6 +59,8 @@ class Quest{
 				<input type="hidden" name="quest_renewable_period_hour"  	value="'.$this->renewable_period_quest_arr["hours"].'">
 				<input type="hidden" name="quest_renewable_period_min"  		value="'.$this->renewable_period_quest_arr["minutes"].'">
 			</div>';
+		}
+		
 		
 	}
 	public function display_quest_on_voting_page($mode = "default"){
@@ -101,7 +125,7 @@ class Quest{
 											"minutes" => (int)date("i"),
 											"seconds" =>  (int)date("s")
 		);
-		
+
 		$years 	= $now_arr["years"] - $this->date_last_execution["years"];
 		$months = $years*12 +$now_arr["months"] - $this->date_last_execution["months"];
 		$days 		= $now_arr["days"] - $this->date_last_execution["days"];
@@ -116,11 +140,13 @@ class Quest{
 		);
 		
 		return $this->compare_time_to_renewable_period($time, $now_arr);
-		
-	}
 
+	}
+	
 	private function compare_time_to_renewable_period($_time, $_now_arr){
-		if($_time["days"]<0 /*&& $_time["months"]>0*/){
+		
+		
+		if($_time["days"]<0 ){
 			$_time["months"]--;
 			$starting_point_y=$_now_arr["years"];
 			if($_now_arr["months"]-1<1){
@@ -135,22 +161,41 @@ class Quest{
 			
 		}
 		
-		if($_time["seconds"]<0 /*&& $_time["days"]>0*/){
+		if($_time["seconds"]<0){
 			$_time["days"]--;
 			$_time["seconds"]+=86400; //24x60x60
 		}
-		if(
-			$_time["months"]-$this->renewable_period_quest_arr["months"]>=0 
-			&& 
-			$_time["days"]-$this->renewable_period_quest_arr["days"]>=0 
-			&&
-			$_time["seconds"]-($this->renewable_period_quest_arr["hours"]*3600+$this->renewable_period_quest_arr["minutes"]*60+$this->renewable_period_quest_arr["seconds"])>=-30
-		) return true;
+		$dif_m = $_time["months"]-$this->renewable_period_quest_arr["months"];
+		$dif_d = $_time["days"]-$this->renewable_period_quest_arr["days"];
+		$renewable_period_seconds = $this->renewable_period_quest_arr["hours"]*3600+$this->renewable_period_quest_arr["minutes"]*60+$this->renewable_period_quest_arr["seconds"];
+		$dif_s =$_time["seconds"]-$renewable_period_seconds;
+		if( $dif_m>=0	&&	$dif_d >=0	&&	$dif_s >=-30 ){
+			
+			return $this->how_many_periods($dif_m, $dif_d, $dif_s);
+		}		
 		
 		else return false;
 		
 	}
-
+	
+	private function how_many_periods($_dif_m, $_dif_d, $_dif_s){
+		
+		$main_counter = 0;
+		if($this->renewable_period_quest_arr["months"]>0){
+			$main_counter = $_dif_m/$this->renewable_period_quest_arr["months"];
+		}
+		elseif($this->renewable_period_quest_arr["days"]>0){
+			$main_counter = $_dif_d/$this->renewable_period_quest_arr["days"];
+		}
+		else{
+			$renewable_period_seconds = $this->renewable_period_quest_arr["hours"]*3600+$this->renewable_period_quest_arr["minutes"]*60+$this->renewable_period_quest_arr["seconds"];
+			$main_counter = $_dif_s/$renewable_period_seconds;
+		}
+		
+		if($main_counter >0)	$this->premium_multiplier = $main_counter;
+		return true;
+	}
+	
 	private function explode_data_str($_datetime_string, $is_year = true){
 	
 		$datetime = explode(" ",$_datetime_string);
@@ -207,6 +252,15 @@ class Quest{
 	
 	public function get_id_quest(){
 		return $this->id_quest;
+	}
+	public function is_deleting_in_progress(){
+		$sql_search = "SELECT COUNT(`id_voting_process`) as 'number' FROM `inz_voting_system` WHERE `voting_subject`='quest_delete%id_quest%". $this->get_id_quest()."' AND `voting_status`='1' ";
+		if($result = $_SESSION["DB_connection"]->query_arr($sql_search)){
+			return $result[0]["number"]; 
+		}
+		else{
+			return 0;
+		}
 	}
 }
 ?>

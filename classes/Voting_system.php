@@ -91,14 +91,14 @@ class Voting_system{
 		}
 
 		if((float)$how_many_votes/(float)$how_many_voters>=0.51){
-
+			$current_date = date('Y-m-d');
 			if((float)$decision_sum/(float)$how_many_voters>=0.51){
-				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='2' WHERE `id_voting_process`='".$this->id_voting_process."' ";
+				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='2', `voting_decision_date`='$current_date' WHERE `id_voting_process`='".$this->id_voting_process."' ";
 				$_SESSION["DB_connection"]->query($sql_finish_voting);
 				return $this->voting_complete_procedure("yes");
 			}
 			else{
-				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='0' WHERE `id_voting_process`='".$this->id_voting_process."' ";
+				$sql_finish_voting="UPDATE `inz_voting_system` SET  `voting_results`='$voting_results_string', `voting_status`='0', `voting_decision_date`='$current_date' WHERE `id_voting_process`='".$this->id_voting_process."' ";
 				
 				$_SESSION["DB_connection"]->query($sql_finish_voting);
 				return $this->voting_complete_procedure("no");

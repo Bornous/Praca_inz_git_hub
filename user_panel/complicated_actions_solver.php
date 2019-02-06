@@ -110,6 +110,7 @@ elseif(isset($_POST["add_a_quest"])){
 	if($_SESSION["DB_connection"]->prepare_bind_param($sql_insert, $params_to_bind)){
 		$id_quest = $_SESSION["DB_connection"]->give_insert_id();
 		$start_voting_procedure= new Voting_system("quest_add%id_quest%$id_quest");
+		$start_voting_procedure->voting(1);
 		//print_r($start_voting_procedure);
 		header('Location: user_panel.php?redirect=quests_page&quest_adding=success');
 	}
@@ -128,11 +129,21 @@ elseif(isset($_POST["edit_a_quest"])){
 	$sql_update="UPDATE `inz_quests` SET `edit_str_quest`=? WHERE `id_quest`='$id_quest'";
 	if($_SESSION["DB_connection"]->prepare_bind_param($sql_update, $params_to_bind)){
 		$start_voting_procedure= new Voting_system("quest_edit%id_quest%$id_quest");
+		$start_voting_procedure->voting(1);
 		header('Location: user_panel.php?redirect=vote_page_quests&quest_edit=success');
 	}
 	else{
 		header('Location: user_panel.php?redirect=vote_page_quests&quest_edit=failure');
 	}
+}
+elseif(isset($_POST["start_voting_to_del"])){
+	if(!empty($_POST["del_quest_id"])){
+		$id_quest = $_POST["del_quest_id"];
+		$start_voting_procedure= new Voting_system("quest_delete%id_quest%$id_quest");
+		$start_voting_procedure->voting(1);
+	}
+	header('Location: user_panel.php?redirect=vote_page_quests&quest_del=success');
+	
 }
 elseif(isset($_POST["voting_quest_edit"])){
 	

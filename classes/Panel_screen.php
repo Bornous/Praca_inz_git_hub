@@ -57,7 +57,7 @@ class Panel_screen{
 				elseif( $the_quest->calculate_last_execution() ){
 						
 						echo "<div class=\"a_quest active_quest\">";
-						$the_quest->display_quest();
+						$the_quest->display_quest(true);
 						echo "</div>";
 						$array_of_quests[] = $the_quest ;
 					
@@ -330,7 +330,11 @@ class Panel_screen{
 		if($result_quests = $_SESSION["DB_connection"]->query_arr($sql)){
 			$FLAG_title=true;
 			echo '	
-						
+						<form id="delete_form" action="complicated_actions_solver.php" method="POST">
+								<input type="hidden" name="start_voting_to_del" value="true">
+								<input type="hidden" name="del_quest_id" value="">
+								<div class="delete_button">Zgłoś zadanie do usunięcia</div>
+						</form>
 						<div class="form_adding_quest voting_page_edit_form">
 							<form action="complicated_actions_solver.php" method="post">
 								<input type="hidden" name="edit_a_quest" value="true">
@@ -357,16 +361,20 @@ class Panel_screen{
 								<input id="submitbutton" type="submit" value="Wyślij propozycję edycji" class="login_submit_button">
 							</form>
 						</div>';
-			foreach($result_quests as $a_quest){			
-				if($FLAG_title){
-					echo '<div class="title_quests_list grey_color_title">Wszystkie zaakceptowane zadania: </div>';
-					$FLAG_title=false;
-				}
-				$the_quest = new Quest($a_quest);
-				echo "<div class=\"a_quest_to_edit voting_quests_to_edit grey_color\">";
-				$the_quest->display_quest();
-				echo "</div>";				
+			foreach($result_quests as $a_quest){
 				
+				$the_quest = new Quest($a_quest);	
+				if( $the_quest->is_deleting_in_progress()	==	FALSE ){
+					
+					if($FLAG_title){
+						
+						echo '<div class="title_quests_list grey_color_title">Wszystkie zaakceptowane zadania: </div>';
+						$FLAG_title=false;
+					}					
+					echo "<div class=\"a_quest_to_edit voting_quests_to_edit grey_color\">";
+					$the_quest->display_quest();
+					echo "</div>";				
+				}
 			}
 		}
 		echo '</div>';
@@ -420,6 +428,7 @@ class Panel_screen{
 	public function get_action_name(){
 		return $this->action_name;
 	}
+	
 	public function create_main_content(){
 		switch($this->action_name){
 			

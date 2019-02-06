@@ -877,6 +877,25 @@ text-align: center;
 	z-index:9999;
 }
 
+.delete_button{
+	display:none;
+	position:fixed;
+	background-color: #f57560;
+	top:10px;
+	right:10px;
+	z-index:9999;
+	padding:10px;
+	font-size:1.8em;
+	cursor: pointer;
+	transition: background-color 0.7s;
+	border-radius: 10px;
+}
+
+
+.delete_button:hover{
+	background-color: #d83a20;;
+}
+
 /* --- VOTE: submit incomers -------------------------------------------------------------------*/
 
 

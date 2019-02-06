@@ -122,6 +122,7 @@ $(document).ready(function(){
 		$(".background_white").hide().fadeOut( 400 );
 		$(".voting_popup ").hide().fadeOut( 400 );		
 		$(".form_adding_quest ").hide().fadeOut( 400 );
+		$(".delete_button ").hide().fadeOut( 400 );
 	});
 	
 	$(document).keyup(function(e) {
@@ -129,6 +130,7 @@ $(document).ready(function(){
 			$(".background_white").hide().fadeOut( 400 );
 			$(".voting_popup ").hide().fadeOut( 400 );
 			$(".form_adding_quest ").hide().fadeOut( 400 );
+			$(".delete_button ").hide().fadeOut( 400 );
 	  }
 	});
    
@@ -159,6 +161,7 @@ $(document).ready(function(){
 			var this_quest = $(this);
 			$(".form_adding_quest").show();		
 			$(".background_white").show();
+			$(".delete_button").show();
 			//$(".background_white").find(".voting_page_return_button");
 			var width_popup = $(window).width()/2-$(".form_adding_quest").width()/2;
 			var height_popup = $(window).height()/2- $(".form_adding_quest").height()/2;	  
@@ -172,7 +175,12 @@ $(document).ready(function(){
 			$(".form_adding_quest").find("input[name=\"edit_renewable_period_hour\"]").val(this_quest.find("input[name=\"quest_renewable_period_hour\"]").val());
 			$(".form_adding_quest").find("input[name=\"edit_renewable_period_min\"]").val(this_quest.find("input[name=\"quest_renewable_period_min\"]").val());
 			$(".form_adding_quest").find("input[name=\"edit_quest_id\"]").val(this_quest.find("input[name=\"id_quest\"]").val());
+			$("#delete_form").find("input[name=\"del_quest_id\"]").val(this_quest.find("input[name=\"id_quest\"]").val());
 			
+	});
+	
+	$('.delete_button').click(function(){
+		this.parentNode.submit();
 	});
 	
 	$('.voting_delete_quest ').click(function(){
