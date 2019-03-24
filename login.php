@@ -424,7 +424,7 @@ elseif($login_screen_object->get_event()=="forgot_password"){
  });
 </script>
 
-		<div class="register register_button" ><a href="login.php?login=register">Register for free</a></div>
+		<div class="register register_button" ><a href="login.php?login=register">Zarejestruj się</a></div>
 			
 		<div class="login_wrapper">
 						

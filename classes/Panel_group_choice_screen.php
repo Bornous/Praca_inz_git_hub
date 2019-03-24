@@ -44,7 +44,7 @@ class Panel_group_choice_screen{
 		echo '<div class="new_group_form">';
 		echo '		<div class="new_group_form_title">Dołącz do grupy</div>';
 		echo '		<div class="new_group_input"><span>Wprowadź email użytkownika, który należy do grupy, do której chcesz się dostać:</span></div>';
-		echo '		<div class="new_group_input">';
+		echo '		<div class="new_group_input email_centered">';
 		echo '			<input type="email" name="group_user" autofocus="autofocus" placeholder="Email"/>';
 		echo '		</div>';
 		echo '		<div class="new_group_submit_button" onclick="javascript:this.parentNode.parentNode.submit();">Zatwierdź</div>';

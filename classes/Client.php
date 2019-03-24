@@ -25,10 +25,11 @@ class Client{
 	
 	public function assigment_to_a_group($_group_user){
 		$id_group = $_group_user->give_id_group();
-		$sql_assign_the_group = "UPDATE `inz_users` SET `id_group_user` = '$id_group' WHERE `id_user` = '".$this->id_user."'";
+		$sql_assign_the_group = "UPDATE `inz_users` SET `id_group_user` = '$id_group', `is_allowed_to_vote` = '2' WHERE `id_user` = '".$this->id_user."'";
 
 		if ($_SESSION["DB_connection"]->query($sql_assign_the_group)){
 			$this->group_user=$_group_user;
+			
 		}
 		else{
 			echo "Query failure! |:::>".$sql_assign_the_group."<:::|";
@@ -36,7 +37,7 @@ class Client{
 	}
 	
 	public function give_id_group(){
-		return $this->group_user->give_id_group();
+		return $this->group_user->give_id_group(); //it returns value from Group's method called the same
 	}
 
 	public function get_id_user(){

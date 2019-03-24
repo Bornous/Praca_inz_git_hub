@@ -2,6 +2,9 @@
 body{
 	font-family: 'Spectral', serif;
 }
+#top_10{
+	margin-bottom:100px;
+}
 
 .hidden{
 	display:none;
@@ -22,7 +25,7 @@ body{
 
 /* Login/register screen */
 
-.login_wrapper{ width:100%;margin: 20px 0px; border-top: 1px solid #dcdcdc; border-bottom: 1px solid #dcdcdc; }
+.login_wrapper{ width:100%;margin: 20px 0px;}
 .login_panel{ box-sizing:border-box; max-width:450px; margin:20px auto; border: 1px solid #ddd; border-radius:4px;box-shadow: 0 1px 1px rgba(0,0,0,.05);  }
 
 .login_panel_head{ font-size: 14px; line-height: 1.42857143; padding: 10px 15px; border-bottom: 1px solid transparent; border-top-left-radius: 3px; border-top-right-radius: 3px;color: #333; background-color: #f5f5f5; border-color: #ddd;}
@@ -333,6 +336,10 @@ input[disabled]{
 	box-shadow:  1px 1px 2px 2px #000000aa;
 }
 
+.email_centered{
+text-align: center;
+}
+
 /* User panel screen  --- QUESTS */
 
 
@@ -351,21 +358,67 @@ input[disabled]{
   }
 }
 
+.add_quest{
+	flex: 1 auto;
+	margin:5px;
+	padding:10px;
+	box-sizing:border-box;
+	border: 3px dotted #000c;
+	background-color: #5CBF60;
+	text-align: center;
+	line-height: 137px;
+	font-size:1.4em;
+	cursor:pointer;
+	transition: background-color .4s;
+}
+
+.add_quest span{
+	 display: inline-block;	 
+	 vertical-align: middle;	 
+	 line-height: normal;
+}
+
+.add_quest:hover{
+	background-color: #2AA72F;
+}
+
+.quest_form{
+	box-sizing: border-box;
+}
+
 .new_quest, .a_quest{
 	flex: 1 auto;
 	margin:5px;
 	padding:10px;
 	box-sizing:border-box;
 	border: 3px dotted #79c32391;
+	transition: background-color .3s;
 
 }
+
 .new_quest{
 	background-color:#ffeb3b99;
 	
 }
+
+.new_quest:hover{
+	background-color:#ffe81dcc;
+	border: 3px dotted #77c61b;
+}
+
 .a_quest{
 	/*background-color:#efffcc;*/
 	background-color:#aadeff99;
+}
+
+.a_quest:hover{
+	/*background-color:#efffcc;*/
+	background-color: #73c7ffcc;
+	border: 3px dotted #1d300899;
+}
+
+.a_quest:hover .points_quest{
+	opacity:0.9;
 }
 
 .active_quest{
@@ -402,14 +455,13 @@ input[disabled]{
 	border-radius:30% 30% 0px 0px;
 }
 
-.confirm_popup:before{
-	display:none;
+.background_white{
 	position:fixed;
 	top:0px;
 	left:0px;
 	height:100%;
 	width:100%;
-	background-color: #ffffff55;
+	background-color: #fffffff1;
 	z-index: 9998;
 }
 .confirm_popup{
@@ -417,46 +469,141 @@ input[disabled]{
 	background-color:#aadeffef;
 	position:fixed;
 	width:	60%;
-	height:	200px;
+	padding-bottom:10px;
 	min-width:		350px;
 	max-width:	1000px;
 	box-sizing:border-box;
 	z-index: 9999;
+	border-radius: 100px;
+	
 }
-.confirm_popup:after{
-	display:	none;
-	clear:	both;
+.succesfull_completion_tick{
+	position: absolute;
+	background-color:#5CBF60;
+	opacity:0;
+	width:100%;
+	height:100%;
+	transition: opacity 1.2s;
+	font-size:12em;
+	text-align:center;
+	z-index: -1;
+	border-radius: 100px;
 }
 
 .text_popup{
 	padding: 10px;
 	font-size:1.5em;
 }
+.text_popup p{
+	text-align: center;
+}
+
+.text_popup p:nth-of-type(2){
+	font-size:1.3em;
+}
 
 .answers_box_popup{
-	
+	display: flex;
+	 justify-content: center;
 }
 
 .answer_popup{
 	margin:10px;
 	cursor: pointer;
-	font-size: 1.5em;
+	font-size: 2.2em;
+	max-width:70px;
+	max-height:70px;
+	padding: 10px;
+	border-radius:50%;
 }
 
 .answ_yes{
-	float:left;
-	padding: 10px;
-	margin-left: 30px;
 	background-color: #4CAF50;
-	border-radius:50%;
 }
 
 .answ_no{
-	float:right;
-	padding: 10px;
-	margin-right: 30px;
+	margin-left: 250px;
 	background-color: #e91e63;
-	border-radius:50%;
+}
+
+.form_adding_quest{
+	width:90%;
+	display:block;
+	margin: 20px auto;
+	padding:10px;
+}
+
+.form_adding_quest textarea{
+	width:90%;
+	height:150px;
+	resize:none;
+}
+
+.datetime_inputs p{
+	max-width:50%;
+	display:flex;
+}
+
+.datetime_inputs label{
+	font-size:1.2em;
+	padding:3px;
+}
+.datetime_inputs input[type="number"]{
+	font-size:1.1em;
+	width: 54px;
+	padding: 3px;
+	border:none;
+}
+
+.form_adding_quest .login_group span:first-of-type{
+	font-size:1.4em;
+}
+
+.datetime_inputs p:first-of-type{
+	max-width:100%;
+}
+
+.form_adding_quest .login_group label{
+	font-size:1.2em;
+}
+
+.form_adding_quest input[name="quest_points"]{
+	font-size:1.4em;
+	width: 74px;
+	padding: 3px;
+	padding-left: 7px;
+	border:none;
+}
+
+.form_adding_quest #submitbutton{
+	width:90%;
+	transition: background-color 0.7s;
+}
+
+.form_adding_quest #submitbutton:hover{
+	background-color:#1b6b1b;
+}
+
+.return_button_new_quest span{
+	flex: 1 auto;
+	margin: 0px 5px;
+}
+.return_button_new_quest{
+	padding:5px 10px;
+	background-color: #5ca1b8;
+	cursor:pointer;
+	margin-bottom:10px;
+	margin-left:5px;
+	transition: background-color 0.7s;
+	font-size:1.8em;
+	width:140px;
+	border-radius:10px;
+	display:flex;
+	justify-content: center;
+}
+
+.return_button_new_quest:hover{
+	background-color:#1d7bcb;
 }
 
 /* User panel screen  --- RANKING */
@@ -496,7 +643,7 @@ input[disabled]{
 .persons_place{
 	margin-right:3px;
 	padding:8px 13px;
-	font-size:2.1 em;	
+	font-size: 1.7em;	
 	border-right: 3px dotted #0055ab;
 }
 
@@ -563,7 +710,21 @@ input[disabled]{
 }
 
 /* --- VOTE: add/edit... quests*/
+.right_container div:first-of-type .title_quests_list{
+	margin-top:0px;
+}
+.title_quests_list{
+	display: flex;
+	font-size:1.3em;
+	padding: 5px;
+	background-color: #00aaff;
+	border-radius:0px 30px 0px 0px;
+	margin-top:30px
+}
 
+.title_quests_list:first-of-type{
+	margin-top:0px;
+}
 
 .a_quest_to_edit{
 	display: flex;
@@ -616,10 +777,126 @@ input[disabled]{
 	border: none;
 	font-size: 1em;
 	border-radius: 0%;
+	min-width:100px;
+}
+
+.grey_color{
+	background-color: #b8c1c5;
+}
+
+.grey_color_title{
+	background-color: #707f86;;
+}
+
+.voting_popup{
+	display:none;
+	position:fixed;
+	opacity:0;
+	transition: opacity 0.5s;
+	background-color: #a3bfffcc;
+	z-index: 9999;
+	border-radius: 20px;
+	padding: 20px;
+	font-size:18px;
+	width:70%;
+	padding-left:30px;
 }
 
 
-/* --- VOTE: submit incomers*/
+.voting_popup .popup_title{
+	font-size:24px;
+}
+.voting_popup .popup_q_info{
+	width:100%;
+}
+.voting_popup .popup_q_info span{
+	font-size:18px;
+	margin-right: 40px;
+	color: black;
+	min-width:246.5px;
+}
+
+.voting_popup .popup_q_info span:nth-of-type(2){
+	color: #073819;
+}
+
+.voting_popup .popup_q_info .name_quest{
+	border:none;
+	margin-top:10px;	
+}
+.voting_popup .popup_q_info .desc_quest{
+	border:none;
+	margin-top:10px;
+	color:inherit;
+	font-size:1.2em;
+}
+
+.voting_popup .popup_q_info .renewable_period{
+	border:none;
+	margin-top:10px;
+	font-size:1.2em;
+}
+
+.voting_popup .popup_q_info .points_quest{
+	border:none;
+	margin-top:10px;
+	font-size:1.2em;
+	text-align:inherit;
+}
+.voting_popup .popup_q_info .points_quest span{
+	border:none;
+	margin-top:10px;
+	position:inherit;
+	background-color:inherit;
+	padding:0px;
+	border-radius:0px;
+}
+
+.voting_popup .voting_popup .answers_box_popup{
+	margin-top:30px;
+}
+
+.user_voted_yes{
+		background-color:#73b97680;
+}
+
+.user_voted_no{
+	background-color: #ef5c5c4d;
+}
+
+.voting_page_edit_form{
+	display:none;
+	position:fixed;
+	margin:0px;
+	padding:40px;
+	z-index:9998;
+}
+
+.voting_page_return_button{
+	margin:10px;
+	z-index:9999;
+}
+
+.delete_button{
+	display:none;
+	position:fixed;
+	background-color: #f57560;
+	top:10px;
+	right:10px;
+	z-index:9999;
+	padding:10px;
+	font-size:1.8em;
+	cursor: pointer;
+	transition: background-color 0.7s;
+	border-radius: 10px;
+}
+
+
+.delete_button:hover{
+	background-color: #d83a20;;
+}
+
+/* --- VOTE: submit incomers -------------------------------------------------------------------*/
 
 
 .an_incomer{
@@ -660,7 +937,7 @@ input[disabled]{
 .a_list_of_incomers{
 	padding:30px;
 	font-size:2em;
-	color: 000000af;
+	color: #000000af;
 }
 
 /* User panel screen  --- SETTINGS */
@@ -678,4 +955,5 @@ input[disabled]{
 	margin-top: 45px;
 	text-align:center; 
 	font-size: 1.7em;
+	margin-bottom:100px;
 }

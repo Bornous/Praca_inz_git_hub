@@ -17,6 +17,10 @@ class DB_conn{
 			
 	}
 	
+	function __destruct() {
+       $this->conn->close();
+   }
+	
 	public function give_db_conn(){
 		
 		return $this->conn;		
@@ -67,6 +71,17 @@ class DB_conn{
 	public function give_insert_id(){
 		return $this->conn->insert_id;
 	}
+	
+	public function prepare_bind_param($sql, $params_arr){
+		$prepared_stat =  $this->conn->prepare($sql); 
+		$ref    = new ReflectionClass('mysqli_stmt');
+		$method = $ref->getMethod("bind_param");
+		$method->invokeArgs($prepared_stat,$params_arr);
+		$prepared_stat->execute();  
+		$prepared_stat->close();  
+		return true;
+	}
+	
 }
 
 
