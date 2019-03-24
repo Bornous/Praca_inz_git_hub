@@ -26,7 +26,7 @@ class Quest{
 	
 	public function display_quest($do_add_premium_multiplier = false){
 		if($do_add_premium_multiplier){
-			$points = $this->points_quest*$this->premium_multiplier;
+			$points = floor($this->points_quest*$this->premium_multiplier);
 			if($this->premium_multiplier > 1) $prem_points_class = "premium_points";
 			else $prem_points_class = "";
 			echo '
